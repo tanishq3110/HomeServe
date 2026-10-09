@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-[#F8FAFC] text-slate-900;
+  }
+}
+
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes floatReverse {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(7px); }
+}
+
+@keyframes shimmerGlow {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
+
+.animate-float-slow {
+  animation: floatSlow 5s ease-in-out infinite;
+}
+
+.animate-float-reverse {
+  animation: floatReverse 6.5s ease-in-out infinite;
+}
+
+.animate-shimmer-glow {
+  animation: shimmerGlow 4s ease-in-out infinite;
+}
