@@ -177,16 +177,16 @@ const HomePage = () => {
   return (
     <div className="space-y-20 pb-20 overflow-x-hidden">
       
-      {/* 1. RECREATED MODERN HERO SECTION */}
-      <section className="relative bg-gradient-to-b from-[#090D16] via-[#0E1526] to-[#121824] text-white pt-10 pb-24 px-4 sm:px-6 lg:px-8 overflow-hidden border-b border-white/10">
+      {/* 1. RECREATED MODERN HERO SECTION - WHITE & ORANGE COMBINATION */}
+      <section className="relative bg-gradient-to-b from-orange-50/70 via-white to-orange-50/30 text-slate-900 pt-10 pb-24 px-4 sm:px-6 lg:px-8 overflow-hidden border-b border-orange-100/80">
         
-        {/* Ambient atmospheric glow orbs */}
-        <div className="absolute -top-32 right-1/4 w-[600px] h-[600px] bg-brand-accent/20 rounded-full blur-[140px] pointer-events-none" />
-        <div className="absolute top-1/2 -left-32 w-[500px] h-[500px] bg-blue-600/15 rounded-full blur-[130px] pointer-events-none" />
-        <div className="absolute bottom-0 right-10 w-[400px] h-[400px] bg-amber-500/10 rounded-full blur-[120px] pointer-events-none" />
+        {/* Ambient warm orange & amber atmospheric glow orbs */}
+        <div className="absolute -top-32 right-1/4 w-[600px] h-[600px] bg-orange-400/15 rounded-full blur-[140px] pointer-events-none" />
+        <div className="absolute top-1/2 -left-32 w-[500px] h-[500px] bg-amber-400/15 rounded-full blur-[130px] pointer-events-none" />
+        <div className="absolute bottom-0 right-10 w-[400px] h-[400px] bg-orange-500/10 rounded-full blur-[120px] pointer-events-none" />
 
-        {/* Subtle geometric dot matrix overlay */}
-        <div className="absolute inset-0 bg-[radial-gradient(rgba(255,255,255,0.06)_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none opacity-60" />
+        {/* Subtle geometric dot matrix overlay in warm tone */}
+        <div className="absolute inset-0 bg-[radial-gradient(rgba(249,115,22,0.08)_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none opacity-80" />
 
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center relative z-10">
           
@@ -194,7 +194,7 @@ const HomePage = () => {
           <div className="lg:col-span-6 space-y-6 text-center lg:text-left">
             
             {/* Live Tracking Available in Bangalore Pill */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-orange-500/30 bg-orange-500/10 text-orange-400 text-xs font-semibold backdrop-blur-sm shadow-sm">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-orange-200 bg-white/90 shadow-sm text-orange-600 text-xs font-bold backdrop-blur-sm">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
@@ -204,20 +204,20 @@ const HomePage = () => {
 
             {/* Main Headline */}
             <div className="space-y-4">
-              <h1 className="text-4xl sm:text-5xl lg:text-[62px] font-black tracking-tight leading-[1.08] text-white">
+              <h1 className="text-4xl sm:text-5xl lg:text-[62px] font-black tracking-tight leading-[1.08] text-slate-900">
                 Expert Home<br />
                 Services,<br />
                 <span className="text-[#FF5A1F]">In 30 Minutes.</span>
               </h1>
-              <p className="max-w-lg text-slate-400 text-sm sm:text-base leading-relaxed mx-auto lg:mx-0 font-normal">
+              <p className="max-w-lg text-slate-600 text-sm sm:text-base leading-relaxed mx-auto lg:mx-0 font-normal">
                 Skip the wait. Book verified electricians, plumbers, and cleaning professionals instantly. Backed by our 30-day rework warranty.
               </p>
             </div>
 
-            {/* Dark Pill Search Console */}
+            {/* Elevated Clean White Pill Search Console */}
             <form
               onSubmit={handleHeroSearchSubmit}
-              className="max-w-xl bg-[#0F172A]/90 backdrop-blur-md rounded-full p-2 pl-4 sm:pl-5 shadow-2xl flex items-center border border-slate-800 focus-within:border-slate-700 transition mx-auto lg:mx-0"
+              className="max-w-xl bg-white rounded-full p-2 pl-4 sm:pl-5 shadow-xl shadow-orange-950/5 flex items-center border border-slate-200/90 focus-within:border-orange-400 focus-within:ring-4 focus-within:ring-orange-500/10 transition mx-auto lg:mx-0"
             >
               <div className="flex items-center gap-2.5 flex-1 min-w-0 mr-2">
                 <Search className="w-4 h-4 text-slate-400 flex-shrink-0" />
@@ -226,18 +226,18 @@ const HomePage = () => {
                   value={heroSearch}
                   onChange={(e) => setHeroSearch(e.target.value)}
                   placeholder="e.g. AC Repair, Plumber..."
-                  className="w-full text-white placeholder-slate-500 bg-transparent text-xs sm:text-sm focus:outline-none font-medium"
+                  className="w-full text-slate-800 placeholder-slate-400 bg-transparent text-xs sm:text-sm focus:outline-none font-medium"
                 />
               </div>
 
-              <div className="hidden sm:flex items-center gap-1.5 px-3 border-l border-slate-800 text-slate-300 text-xs sm:text-sm font-medium">
-                <MapPin className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+              <div className="hidden sm:flex items-center gap-1.5 px-3 border-l border-slate-200 text-slate-700 text-xs sm:text-sm font-medium">
+                <MapPin className="w-3.5 h-3.5 text-orange-500 flex-shrink-0" />
                 <span>{selectedLocation}</span>
               </div>
 
               <button
                 type="submit"
-                className="bg-[#FF5A1F] hover:bg-orange-600 text-white font-semibold text-xs sm:text-sm px-5 sm:px-6 py-2.5 sm:py-3 rounded-full flex items-center gap-1.5 shadow-lg shadow-orange-500/25 transition-all flex-shrink-0 cursor-pointer"
+                className="bg-[#FF5A1F] hover:bg-orange-600 text-white font-semibold text-xs sm:text-sm px-5 sm:px-6 py-2.5 sm:py-3 rounded-full flex items-center gap-1.5 shadow-lg shadow-orange-500/30 transition-all flex-shrink-0 cursor-pointer"
               >
                 <span>Search</span>
                 <ChevronRight className="w-4 h-4" />
@@ -256,7 +256,7 @@ const HomePage = () => {
                   key={tag}
                   type="button"
                   onClick={() => handleQuickTagClick(tag)}
-                  className="px-3.5 py-1 rounded-full border border-slate-800 bg-slate-900/60 hover:bg-slate-800/90 hover:border-slate-700 text-slate-300 hover:text-white transition cursor-pointer font-medium"
+                  className="px-3.5 py-1 rounded-full border border-orange-100 bg-white hover:bg-orange-50 hover:border-orange-300 text-slate-700 hover:text-orange-600 shadow-sm transition cursor-pointer font-medium"
                 >
                   {tag}
                 </button>
@@ -269,21 +269,35 @@ const HomePage = () => {
           <div className="lg:col-span-6 relative mt-12 lg:mt-0 flex justify-center lg:justify-end">
             <div className="relative w-full max-w-[480px] sm:max-w-[500px]">
               
-              {/* Subtle ambient back-glow */}
-              <div className="absolute inset-0 bg-gradient-to-tr from-orange-500/15 via-blue-500/10 to-transparent rounded-[36px] blur-3xl opacity-60 pointer-events-none" />
+              {/* Warm Orange Ambient Glow */}
+              <div className="absolute inset-0 bg-gradient-to-tr from-orange-400/25 via-amber-300/20 to-transparent rounded-[36px] blur-3xl opacity-75 pointer-events-none" />
 
-              {/* Center Main Image (Cleaner wiping window blinds) */}
-              <div className="relative mx-auto w-[82%] sm:w-[84%] aspect-[3/3.8] rounded-[32px] overflow-hidden border border-white/10 shadow-2xl bg-slate-900">
-                <img
-                  src={heroCleanerImg}
-                  alt="Professional Home Cleaner"
-                  className="w-full h-full object-cover object-top filter brightness-[0.98] contrast-[1.02]"
+              {/* Center Main Card - Cinematic Live Service Video Showcase */}
+              <div className="relative mx-auto w-[82%] sm:w-[84%] aspect-[3/3.8] rounded-[32px] overflow-hidden border-4 border-white shadow-2xl shadow-orange-950/15 bg-slate-900 group">
+                <video
+                  src="/videos/hero-service.mp4"
+                  poster={heroCleanerImg}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="w-full h-full object-cover filter brightness-[0.98] contrast-[1.02]"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent pointer-events-none" />
+
+                {/* Subtle top indicator */}
+                <div className="absolute top-3.5 right-3.5 px-2.5 py-1 rounded-full bg-slate-950/70 backdrop-blur-md border border-white/20 text-[10px] font-bold text-white flex items-center gap-1.5 shadow-md">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                  </span>
+                  <span className="tracking-wide uppercase">Live Showcase</span>
+                </div>
+
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent pointer-events-none" />
               </div>
 
               {/* Top-Right Inset Floating Image (Luxury clean bathroom) */}
-              <div className="absolute -top-6 -right-2 sm:-top-8 sm:-right-4 w-36 h-36 sm:w-44 sm:h-44 rounded-[26px] overflow-hidden border-4 border-[#090D16] shadow-2xl z-20 bg-slate-900">
+              <div className="absolute -top-6 -right-2 sm:-top-8 sm:-right-4 w-36 h-36 sm:w-44 sm:h-44 rounded-[26px] overflow-hidden border-4 border-white shadow-2xl z-20 bg-white">
                 <img
                   src={heroBathroomImg}
                   alt="Spotless Bathroom Renovation"
@@ -292,38 +306,38 @@ const HomePage = () => {
               </div>
 
               {/* Bottom-Left Inset Floating Image (Electrician in helmet with switchboard) */}
-              <div className="absolute -bottom-6 -left-2 sm:-bottom-8 sm:-left-4 w-40 h-40 sm:w-48 sm:h-48 rounded-[26px] overflow-hidden border-4 border-[#090D16] shadow-2xl z-20 bg-slate-900">
+              <div className="absolute -bottom-6 -left-2 sm:-bottom-8 sm:-left-4 w-40 h-40 sm:w-48 sm:h-48 rounded-[26px] overflow-hidden border-4 border-white shadow-2xl z-20 bg-white">
                 <img
                   src={heroElectricianImg}
                   alt="Verified Electrician"
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute bottom-2.5 left-2.5 px-2.5 py-1 rounded-full bg-slate-950/80 backdrop-blur-md border border-white/10 text-[10px] font-bold text-white flex items-center gap-1 shadow-lg">
-                  <ShieldCheck className="w-3 h-3 text-emerald-400" />
+                <div className="absolute bottom-2.5 left-2.5 px-2.5 py-1 rounded-full bg-white/95 backdrop-blur-md border border-slate-100 text-[10px] font-bold text-slate-900 flex items-center gap-1 shadow-md">
+                  <ShieldCheck className="w-3 h-3 text-emerald-500" />
                   <span>Verified Pro</span>
                 </div>
               </div>
 
-              {/* Floating Badge 1 (Top-Left of center card): 4.9/5 Rating */}
-              <div className="absolute top-10 -left-4 sm:top-12 sm:-left-8 z-30 bg-[#0B1120]/95 backdrop-blur-md border border-slate-800/90 rounded-2xl p-3 px-3.5 sm:px-4 shadow-2xl flex items-center gap-3">
-                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 flex items-center justify-center flex-shrink-0">
-                  <Star className="w-4 h-4 sm:w-5 sm:h-5 fill-emerald-400 text-emerald-400" />
+              {/* Floating Badge 1 (Top-Left): 4.9/5 Rating */}
+              <div className="absolute top-10 -left-4 sm:top-12 sm:-left-8 z-30 bg-white/95 backdrop-blur-md border border-slate-100 rounded-2xl p-3 px-3.5 sm:px-4 shadow-xl shadow-slate-900/5 flex items-center gap-3">
+                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-500 flex items-center justify-center flex-shrink-0">
+                  <Star className="w-4 h-4 sm:w-5 sm:h-5 fill-emerald-500 text-emerald-500" />
                 </div>
                 <div>
-                  <p className="text-xs sm:text-sm font-bold text-white tracking-tight leading-tight">4.9/5 Rating</p>
-                  <p className="text-[10px] sm:text-[11px] text-slate-400 font-medium">Based on 50k+ reviews</p>
+                  <p className="text-xs sm:text-sm font-bold text-slate-900 tracking-tight leading-tight">4.9/5 Rating</p>
+                  <p className="text-[10px] sm:text-[11px] text-slate-500 font-medium">Based on 50k+ reviews</p>
                 </div>
               </div>
 
-              {/* Floating Badge 2 (Bottom-Right of center card): 24m Avg. Arrival */}
-              <div className="absolute -bottom-2 right-2 sm:-bottom-4 sm:right-4 z-30 bg-[#0B1120]/95 backdrop-blur-md border border-slate-800/90 rounded-2xl p-3 px-3.5 sm:px-4 shadow-2xl flex items-center gap-3">
-                <div className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-amber-500/20 border border-amber-500/30 text-amber-400 flex items-center justify-center flex-shrink-0">
-                  <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-amber-400" />
+              {/* Floating Badge 2 (Bottom-Right): 24m Avg. Arrival */}
+              <div className="absolute -bottom-2 right-2 sm:-bottom-4 sm:right-4 z-30 bg-white/95 backdrop-blur-md border border-slate-100 rounded-2xl p-3 px-3.5 sm:px-4 shadow-xl shadow-slate-900/5 flex items-center gap-3">
+                <div className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-orange-50 border border-orange-200 text-orange-500 flex items-center justify-center flex-shrink-0">
+                  <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-orange-500" />
                   <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-orange-500"></span>
                 </div>
                 <div>
-                  <p className="text-xs sm:text-sm font-bold text-white tracking-tight leading-tight">24m Avg. Arrival</p>
-                  <p className="text-[10px] sm:text-[11px] text-slate-400 font-medium">Fastest in Bangalore</p>
+                  <p className="text-xs sm:text-sm font-bold text-slate-900 tracking-tight leading-tight">24m Avg. Arrival</p>
+                  <p className="text-[10px] sm:text-[11px] text-slate-500 font-medium">Fastest in Bangalore</p>
                 </div>
               </div>
 
@@ -333,57 +347,57 @@ const HomePage = () => {
         </div>
 
         {/* Full-width Social Proof & Trust Badges Strip */}
-        <div className="mt-14 pt-8 border-t border-white/10 max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-6 relative z-10">
+        <div className="mt-16 pt-8 border-t border-orange-100 max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-6 relative z-10">
           {/* Customer Avatar Stack & Star Rating */}
           <div className="flex items-center gap-4">
             <div className="flex -space-x-2.5 overflow-hidden">
               <img
-                className="inline-block h-10 w-10 rounded-full ring-2 ring-dark-hero object-cover"
+                className="inline-block h-10 w-10 rounded-full ring-2 ring-white object-cover"
                 src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80"
                 alt="Customer"
               />
               <img
-                className="inline-block h-10 w-10 rounded-full ring-2 ring-dark-hero object-cover"
+                className="inline-block h-10 w-10 rounded-full ring-2 ring-white object-cover"
                 src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80"
                 alt="Customer"
               />
               <img
-                className="inline-block h-10 w-10 rounded-full ring-2 ring-dark-hero object-cover"
+                className="inline-block h-10 w-10 rounded-full ring-2 ring-white object-cover"
                 src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80"
                 alt="Customer"
               />
-              <div className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-brand-accent text-white text-xs font-black ring-2 ring-dark-hero shadow-sm">
+              <div className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-brand-accent text-white text-xs font-black ring-2 ring-white shadow-sm">
                 +38k
               </div>
             </div>
             <div className="text-left">
-              <div className="flex items-center gap-1 text-amber-400 text-sm">
+              <div className="flex items-center gap-1 text-amber-500 text-sm">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
                 ))}
-                <span className="font-extrabold text-white ml-1.5">4.9 / 5</span>
+                <span className="font-extrabold text-slate-900 ml-1.5">4.9 / 5</span>
               </div>
-              <p className="text-xs text-slate-400 font-medium">Over 38,000+ satisfied homeowners served</p>
+              <p className="text-xs text-slate-500 font-medium">Over 38,000+ satisfied homeowners served</p>
             </div>
           </div>
 
           {/* 4 Trust Badges */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 w-full lg:w-auto text-xs text-slate-300">
-            <div className="flex items-center gap-2 bg-white/5 py-2.5 px-3.5 rounded-xl border border-white/5">
-              <ShieldCheck className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-              <span className="font-medium">100% Verified</span>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 w-full lg:w-auto text-xs text-slate-700">
+            <div className="flex items-center gap-2 bg-white py-2.5 px-3.5 rounded-xl border border-orange-100 shadow-sm">
+              <ShieldCheck className="w-4 h-4 text-emerald-500 flex-shrink-0" />
+              <span className="font-semibold text-slate-800">100% Verified</span>
             </div>
-            <div className="flex items-center gap-2 bg-white/5 py-2.5 px-3.5 rounded-xl border border-white/5">
+            <div className="flex items-center gap-2 bg-white py-2.5 px-3.5 rounded-xl border border-orange-100 shadow-sm">
               <Clock className="w-4 h-4 text-brand-accent flex-shrink-0" />
-              <span className="font-medium">30-Min Arrival</span>
+              <span className="font-semibold text-slate-800">30-Min Arrival</span>
             </div>
-            <div className="flex items-center gap-2 bg-white/5 py-2.5 px-3.5 rounded-xl border border-white/5">
-              <CheckCircle2 className="w-4 h-4 text-cyan-400 flex-shrink-0" />
-              <span className="font-medium">Standard Pricing</span>
+            <div className="flex items-center gap-2 bg-white py-2.5 px-3.5 rounded-xl border border-orange-100 shadow-sm">
+              <CheckCircle2 className="w-4 h-4 text-orange-500 flex-shrink-0" />
+              <span className="font-semibold text-slate-800">Standard Pricing</span>
             </div>
-            <div className="flex items-center gap-2 bg-white/5 py-2.5 px-3.5 rounded-xl border border-white/5">
-              <Award className="w-4 h-4 text-amber-400 flex-shrink-0" />
-              <span className="font-medium">30-Day Warranty</span>
+            <div className="flex items-center gap-2 bg-white py-2.5 px-3.5 rounded-xl border border-orange-100 shadow-sm">
+              <Award className="w-4 h-4 text-amber-500 flex-shrink-0" />
+              <span className="font-semibold text-slate-800">30-Day Warranty</span>
             </div>
           </div>
         </div>
