@@ -10,34 +10,71 @@ const register = async (req, res) => {
   try {
     const { name, email, password, phone, role } = req.body;
 
-    // 1. Basic validation
-    if (!name || !name.trim()) {
+    // 1. Type and content validation
+    if (typeof name !== 'string' || !name.trim()) {
       return res.status(400).json({
         success: false,
-        message: 'Full name is required.',
+        message: 'Full name is required and must be text.',
       });
     }
 
-    if (!email || !email.trim()) {
+    if (name.trim().length > 100) {
       return res.status(400).json({
         success: false,
-        message: 'Email address is required.',
+        message: 'Name cannot exceed 100 characters.',
       });
     }
 
-    if (!password || password.length < 6) {
+    if (typeof email !== 'string' || !email.trim()) {
+      return res.status(400).json({
+        success: false,
+        message: 'Email address is required and must be text.',
+      });
+    }
+
+    if (email.trim().length > 254) {
+      return res.status(400).json({
+        success: false,
+        message: 'Email address cannot exceed 254 characters.',
+      });
+    }
+
+    const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,})+$/;
+    if (!emailRegex.test(email.trim())) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide a valid email address.',
+      });
+    }
+
+    if (typeof password !== 'string' || password.length < 6) {
       return res.status(400).json({
         success: false,
         message: 'Password is required and must be at least 6 characters long.',
       });
     }
 
-    // 2. Security Check: Disallow public registration as ADMIN
-    if (role && role.toUpperCase() === 'ADMIN') {
+    if (password.length > 128) {
       return res.status(400).json({
         success: false,
-        message: 'Self-registration as ADMIN is strictly prohibited.',
+        message: 'Password cannot exceed 128 characters.',
       });
+    }
+
+    // 2. Security Check: Disallow public registration as ADMIN or invalid roles
+    if (role) {
+      if (typeof role !== 'string' || role.toUpperCase() === 'ADMIN') {
+        return res.status(400).json({
+          success: false,
+          message: 'Self-registration as ADMIN is strictly prohibited.',
+        });
+      }
+      if (!['CUSTOMER', 'TECHNICIAN'].includes(role.toUpperCase())) {
+        return res.status(400).json({
+          success: false,
+          message: 'Invalid role specified. Permitted roles are CUSTOMER or TECHNICIAN.',
+        });
+      }
     }
 
     // 3. Determine role: CUSTOMER (default) or TECHNICIAN
@@ -120,10 +157,17 @@ const login = async (req, res) => {
     const { email, password } = req.body;
 
     // 1. Validation
-    if (!email || !password) {
+    if (!email || !password || typeof email !== 'string' || typeof password !== 'string') {
       return res.status(400).json({
         success: false,
         message: 'Please provide both email and password.',
+      });
+    }
+
+    if (email.length > 254 || password.length > 128) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid email or password length.',
       });
     }
 

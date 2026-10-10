@@ -13,6 +13,8 @@ import TechnicianDashboardPage from './pages/technician/TechnicianDashboardPage'
 import TechnicianProfilePage from './pages/technician/TechnicianProfilePage';
 import AdminTechniciansPage from './pages/admin/AdminTechniciansPage';
 import AdminBookingsPage from './pages/admin/AdminBookingsPage';
+import AdminReviewsPage from './pages/admin/AdminReviewsPage';
+import AdminAnalyticsPage from './pages/admin/AdminAnalyticsPage';
 import NewBookingPage from './pages/bookings/NewBookingPage';
 import MyBookingsPage from './pages/bookings/MyBookingsPage';
 import BookingDetailPage from './pages/bookings/BookingDetailPage';
@@ -91,6 +93,18 @@ function App() {
 
             {/* Protected Admin Routes */}
             <Route
+              path="admin/analytics"
+              element={
+                <ProtectedRoute allowedRoles={['ADMIN']}>
+                  <AdminAnalyticsPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="admin/dashboard"
+              element={<Navigate to="/admin/analytics" replace />}
+            />
+            <Route
               path="admin/technicians"
               element={
                 <ProtectedRoute allowedRoles={['ADMIN']}>
@@ -103,6 +117,14 @@ function App() {
               element={
                 <ProtectedRoute allowedRoles={['ADMIN']}>
                   <AdminBookingsPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="admin/reviews"
+              element={
+                <ProtectedRoute allowedRoles={['ADMIN']}>
+                  <AdminReviewsPage />
                 </ProtectedRoute>
               }
             />

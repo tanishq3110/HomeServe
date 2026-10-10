@@ -38,6 +38,7 @@ import { technicianService, bookingService } from '../../services/api';
 import useGeolocationTracker from '../../hooks/useGeolocationTracker';
 import { LiveTrackingMap } from '../../components/maps/LiveTrackingMap';
 import MobileBottomNav from '../../components/common/MobileBottomNav';
+import TechnicianReviewList from '../../components/reviews/TechnicianReviewList';
 
 // ─── Status helpers ───────────────────────────────────────────────────────────
 const BOOKING_STATUS_CONFIG = {
@@ -117,9 +118,10 @@ const TechnicianDashboardPage = () => {
   const [actionMsg, setActionMsg] = useState('');
   const [showHistory, setShowHistory] = useState(false);
 
-  const displayName = user?.name || 'Rohit Sharma';
-  const displayRating = profile?.rating && profile.rating > 0 ? profile.rating.toFixed(1) : '4.8';
-  const displayReviews = profile?.totalReviews && profile.totalReviews > 0 ? profile.totalReviews : 124;
+  const displayName = user?.name || 'Technician';
+  // Use real data; only show a placeholder dash when there are genuinely no reviews
+  const displayRating = profile?.rating && profile.rating > 0 ? profile.rating.toFixed(1) : '—';
+  const displayReviews = profile?.totalReviews ?? 0;
 
   const fetchProfile = useCallback(async () => {
     setLoading(true);
@@ -342,7 +344,10 @@ const TechnicianDashboardPage = () => {
                 <p className="text-xs font-bold text-white leading-tight group-hover:text-brand-accent transition">{displayName}</p>
                 <div className="flex items-center gap-1 text-[11px] text-slate-400">
                   <Star className="w-3 h-3 text-amber-400 fill-amber-400" />
-                  <span>{displayRating} ({displayReviews})</span>
+                  <span>
+                    {profile?.rating > 0 ? profile.rating.toFixed(1) : '—'}
+                    {' '}({profile?.totalReviews ?? 0})
+                  </span>
                 </div>
               </div>
             </Link>
@@ -422,6 +427,18 @@ const TechnicianDashboardPage = () => {
               <User className="w-4 h-4" />
               <span>Profile</span>
             </Link>
+
+            <button
+              onClick={() => setActiveTab('reviews')}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition text-left ${
+                activeTab === 'reviews'
+                  ? 'bg-brand-accent text-white shadow-md shadow-orange-500/20'
+                  : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
+              }`}
+            >
+              <Star className="w-4 h-4" />
+              <span>My Reviews</span>
+            </button>
           </div>
 
           {/* Bottom Sidebar: Logout & Verification Status */}
@@ -805,13 +822,13 @@ const TechnicianDashboardPage = () => {
               <p className="text-xs font-semibold text-slate-500">Rating</p>
               <p className="text-xl font-extrabold text-slate-900 mt-0.5 flex items-center gap-1">
                 <Star className="w-4 h-4 text-amber-400 fill-amber-400" />
-                {displayRating}
+                {profile?.rating > 0 ? profile.rating.toFixed(1) : '—'}
               </p>
             </div>
             <div className="bg-white rounded-2xl border border-slate-200 p-4">
               <p className="text-xs font-semibold text-slate-500">Experience</p>
               <p className="text-xl font-extrabold text-slate-900 mt-0.5">
-                {profile?.experience || 3} yrs
+                {profile?.experience || 0} yrs
               </p>
             </div>
             <div className="bg-white rounded-2xl border border-slate-200 p-4">
@@ -827,6 +844,13 @@ const TechnicianDashboardPage = () => {
               </p>
             </div>
           </div>
+
+          {/* ── Reviews Tab Panel (Phase 11) ── */}
+          {activeTab === 'reviews' && profile && (
+            <section className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
+              <TechnicianReviewList technicianId={profile.id} />
+            </section>
+          )}
         </main>
       </div>
 

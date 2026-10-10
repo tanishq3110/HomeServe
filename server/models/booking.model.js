@@ -244,6 +244,8 @@ bookingSchema.index({ customerId: 1, createdAt: -1 });
 bookingSchema.index({ technicianId: 1, status: 1 });
 // Admin filtered lists
 bookingSchema.index({ status: 1, createdAt: -1 });
+// Trends and analytics date range queries
+bookingSchema.index({ createdAt: -1 });
 
 /**
  * Clean up internal Mongoose fields from JSON output

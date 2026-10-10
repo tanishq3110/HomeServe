@@ -20,7 +20,7 @@ import {
   ChevronRight,
   Navigation,
 } from 'lucide-react';
-import { bookingService } from '../../services/api';
+import { bookingService, reviewService } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 import { useBookingSocket } from '../../hooks/useBookingSocket';
 import ConnectionStatusBadge from '../../components/common/ConnectionStatusBadge';
@@ -29,6 +29,7 @@ import StatusBadge from '../../components/common/StatusBadge';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import ErrorState from '../../components/common/ErrorState';
 import MobileBottomNav from '../../components/common/MobileBottomNav';
+import ReviewSection from '../../components/reviews/ReviewSection';
 
 // ─── Status helpers ───────────────────────────────────────────────────────────
 const STATUS_CONFIG = {
@@ -156,6 +157,10 @@ const BookingDetailPage = () => {
   const [cancelError, setCancelError] = useState('');
   const [activeTab, setActiveTab] = useState('Tracking');
 
+  // Phase 11: Review state
+  const [existingReview, setExistingReview] = useState(null);
+  const [reviewLoading, setReviewLoading] = useState(false);
+
   // Phase 8: Technician Live GPS Tracking State
   const [technicianLocation, setTechnicianLocation] = useState(null);
   const [isLocationSharing, setIsLocationSharing] = useState(false);
@@ -187,6 +192,15 @@ const BookingDetailPage = () => {
       } else if (bRes.data?.lastLocation) {
         setTechnicianLocation(bRes.data.lastLocation);
         setIsLocationSharing(Boolean(bRes.data.lastLocation.isSharing));
+      }
+
+      // Phase 11: Fetch existing review if booking is COMPLETED
+      if (bRes.data?.status === 'COMPLETED') {
+        setReviewLoading(true);
+        reviewService.getByBookingId(id)
+          .then((rRes) => setExistingReview(rRes.data || null))
+          .catch(() => setExistingReview(null))
+          .finally(() => setReviewLoading(false));
       }
     } catch (err) {
       setError(err.message || 'Failed to load booking.');
@@ -572,6 +586,15 @@ const BookingDetailPage = () => {
                 </span>
               </div>
             </div>
+
+            {/* ── Phase 11: Review Section (COMPLETED bookings only) ── */}
+            {booking.status === 'COMPLETED' && user?.role === 'CUSTOMER' && !reviewLoading && (
+              <ReviewSection
+                booking={booking}
+                existingReview={existingReview}
+                onReviewSubmitted={(review) => setExistingReview(review)}
+              />
+            )}
 
           </div>
 

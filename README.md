@@ -1,16 +1,25 @@
 # HomeServe 🏠⚡
 
-HomeServe is a hyperlocal home-services marketplace connecting homeowners with verified, high-quality local professionals for essential household services (Electricians, Plumbers, Cleaning, Painting, AC Repair, Carpenters, and Appliance Repair).
+HomeServe is an enterprise-grade, hyperlocal home-services marketplace connecting homeowners with verified, high-quality local professionals for essential household services (Electricians, Plumbers, Cleaning, Painting, AC Repair, Carpenters, and Appliance Repair).
 
 ---
 
-## 🚀 Phase 1: Project Foundation & Basic Architecture
+## 🌟 Platform Capabilities & Phases
 
-This repository contains the Phase 1 architectural foundation:
-- **Frontend**: React + Vite + Tailwind CSS v3 + React Router + Axios + Lucide React
-- **Backend**: Node.js + Express.js + Mongoose
-- **Database**: MongoDB with resilient connection handling
-- **API Communication**: Centralized Axios service with dynamic health monitoring
+HomeServe is engineered with full-stack best practices, featuring 12 end-to-end completed phases:
+
+1. **Architecture & Foundation**: React + Vite frontend, Express.js backend, resilient MongoDB connection handling, and centralized API client.
+2. **Authentication & RBAC**: JWT tokens with role-based access control (`CUSTOMER`, `TECHNICIAN`, `ADMIN`), bcrypt password hashing, and protected route wrappers.
+3. **Service Catalog Engine**: Hyperlocal categorization, dynamic filtering, transparent pricing models, and service detail pages.
+4. **Technician Management**: Technician profile onboarding, availability toggle (`isAvailable`), admin verification pipeline, and skill matching.
+5. **Full Booking Lifecycle**: Customer booking flow, scheduled slots, technician assignment, status state machine (`REQUESTED` → `CONFIRMED` → `IN_PROGRESS` → `COMPLETED` / `CANCELLED`).
+6. **Dynamic Pricing & Billing**: Pricing tier breakdowns, emergency surcharges, taxes, and itemized invoice totals.
+7. **Real-Time WebSockets**: Socket.IO bidirectional event bus with room isolation and live connection badges.
+8. **Live GPS Technician Tracking**: Real-time geolocation sharing, Leaflet interactive maps, marker animation, and dynamic ETA calculation.
+9. **Role Room Isolation & Safety**: Secure room joining authorization preventing unauthorized access to tracking broadcasts.
+10. **Enterprise Security Hardening**: Helmet HTTP headers, CORS origin allowlist, Express rate-limiting, NoSQL injection sanitization, 50KB payload guards, and strict environment validation.
+11. **Reviews & Ratings System**: Verified reviews for completed bookings, automated technician rating aggregation, and admin review moderation.
+12. **Admin Analytics & Business Intelligence**: Operational dashboard displaying revenue metrics, booking distributions, category breakdowns, and technician performance.
 
 ---
 
@@ -19,86 +28,67 @@ This repository contains the Phase 1 architectural foundation:
 ```
 homeserve/
 │
-├── client/                      # React + Vite Frontend
-│   ├── public/                  # Public assets
+├── client/                                # React + Vite Frontend
+│   ├── public/                            # Static assets
 │   ├── src/
-│   │   ├── assets/              # Icons, images & illustrations
-│   │   ├── components/          # Reusable UI components (Navbar, Footer)
-│   │   ├── context/             # State & React context providers (future auth/cart)
-│   │   ├── hooks/               # Custom React hooks
-│   │   ├── layouts/             # App shell layouts (MainLayout)
-│   │   ├── pages/               # Application pages (HomePage)
-│   │   ├── services/            # Centralized API layer (api.js)
-│   │   ├── utils/               # Helper & formatting utilities
-│   │   ├── App.jsx              # React Router route definitions
-│   │   ├── index.css            # Tailwind CSS directives & theme base
-│   │   └── main.jsx             # React DOM entry point
-│   ├── .env.example             # Frontend environment template
-│   ├── index.html               # HTML template
-│   ├── package.json             # Frontend dependencies
-│   ├── postcss.config.js        # PostCSS configuration
-│   ├── tailwind.config.js       # Tailwind CSS v3 design system
-│   └── vite.config.js           # Vite build configuration
+│   │   ├── assets/                        # Images & media assets
+│   │   ├── components/
+│   │   │   ├── auth/                      # Authentication branding & forms
+│   │   │   ├── cards/                     # ServiceCard, TechnicianCard, TestimonialCard
+│   │   │   ├── common/                    # Button, Badges, Modals, Spinners, Skeleton
+│   │   │   ├── maps/                      # LiveTrackingMap (Leaflet GPS tracking)
+│   │   │   └── reviews/                   # ReviewSection & TechnicianReviewList
+│   │   ├── context/                       # AuthContext & SocketContext
+│   │   ├── hooks/                         # useBookingSocket, useGeolocationTracker
+│   │   ├── layouts/                       # MainLayout app shell
+│   │   ├── pages/
+│   │   │   ├── admin/                     # AdminAnalyticsPage, AdminReviewsPage, AdminBookingsPage, AdminTechniciansPage
+│   │   │   ├── bookings/                  # NewBookingPage, MyBookingsPage, BookingDetailPage
+│   │   │   ├── technician/                # TechnicianDashboardPage, TechnicianProfilePage
+│   │   │   ├── HomePage.jsx
+│   │   │   ├── ServicesPage.jsx
+│   │   │   ├── LoginPage.jsx & SignupPage.jsx
+│   │   │   └── ProfilePage.jsx
+│   │   ├── services/                      # Centralized Axios API client (api.js)
+│   │   ├── App.jsx                        # Full React Router routing hierarchy
+│   │   ├── index.css                      # Tailwind styling directives
+│   │   └── main.jsx                       # Entry point
+│   ├── package.json
+│   ├── tailwind.config.js
+│   └── vite.config.js
 │
-├── server/                      # Node.js + Express Backend
-│   ├── config/                  # Configuration & DB connection (db.js)
-│   ├── controllers/             # Express route controllers (health.controller.js)
-│   ├── middleware/              # Custom middleware (error handling, auth)
-│   ├── models/                  # Mongoose data schemas (future User, Booking, etc.)
-│   ├── routes/                  # Express API routes (health.routes.js)
-│   ├── services/                # Business logic services
-│   ├── sockets/                 # Socket.IO handlers (future real-time tracking)
-│   ├── utils/                   # Server-side helper utilities
-│   ├── .env.example             # Backend environment template
-│   ├── package.json             # Backend dependencies
-│   └── server.js                # Express app initialization & server entry
+├── server/                                # Express.js Backend REST & Socket API
+│   ├── config/                            # MongoDB connection & Env validation
+│   ├── controllers/                       # Auth, Booking, Service, Technician, Review, Analytics
+│   ├── middleware/                        # Auth RBAC, Security headers, Rate limiters, Sanitizers
+│   ├── models/                            # User, Technician, Service, Booking, Review schemas
+│   ├── routes/                            # Modular Express router endpoints
+│   ├── services/                          # Business logic (pricing calculator)
+│   ├── sockets/                           # Socket.IO handlers & rooms
+│   ├── tests/                             # Jest automated test suites (Security, Reviews, Analytics)
+│   ├── utils/                             # Verification scripts & database seeders
+│   ├── package.json
+│   └── server.js                          # Server setup & middleware stack
 │
-├── .env.example                 # Root environment variable template
-├── .gitignore                   # Git ignore for node_modules, .env, and builds
-└── README.md                    # Project documentation
+├── .env.example                           # Root environment variable template
+├── .gitignore                             # Git ignore rules
+└── README.md                              # Project documentation
 ```
-
----
-
-## 📦 Installed Packages
-
-### Frontend (`client/`)
-| Package | Version | Purpose |
-| :--- | :--- | :--- |
-| `react` | `^18.3.1` | Core UI library |
-| `react-dom` | `^18.3.1` | React DOM renderer |
-| `react-router-dom` | `^6.28.0` | Client-side routing |
-| `axios` | `^1.7.9` | HTTP client for backend communication |
-| `lucide-react` | `^0.468.0` | Modern SVG icons |
-| `tailwindcss` | `^3.4.17` | Utility-first styling (v3) |
-| `postcss` | `^8.4.49` | CSS processing |
-| `autoprefixer` | `^10.4.20` | CSS vendor prefixing |
-| `vite` | `^6.0.7` | Fast development bundler |
-| `@vitejs/plugin-react` | `^4.3.4` | Vite React fast refresh plugin |
-
-### Backend (`server/`)
-| Package | Version | Purpose |
-| :--- | :--- | :--- |
-| `express` | `^4.21.2` | Minimalist web application framework |
-| `mongoose` | `^8.9.5` | Elegant MongoDB object modeling |
-| `cors` | `^2.8.5` | Cross-Origin Resource Sharing |
-| `dotenv` | `^16.4.7` | Zero-dependency environment variable loader |
-| `nodemon` *(dev)* | `^3.1.9` | Automatic server reload during development |
 
 ---
 
 ## ⚙️ Environment Configuration
 
-Both root and sub-folders provide `.env.example` templates.
-**Important**: `.env` files contain local secrets and are strictly ignored by Git.
+Set up environment files before running the project:
 
-### Backend (`server/.env`)
+### Backend (`server/.env` and root `.env`)
 ```env
 PORT=5000
 NODE_ENV=development
 MONGODB_URI=mongodb://127.0.0.1:27017/homeserve
 CLIENT_URL=http://localhost:5173
-JWT_SECRET=your_jwt_secret_key_here
+JWT_SECRET=your_super_secret_jwt_key_here
+JWT_EXPIRES_IN=7d
 ```
 
 ### Frontend (`client/.env`)
@@ -108,72 +98,46 @@ VITE_API_BASE_URL=http://localhost:5000/api
 
 ---
 
-## 🗄️ MongoDB Configuration
-
-1. **Local MongoDB Service**:
-   Ensure MongoDB service is running locally on port `27017`:
-   - Windows: Start via Windows Services (`MongoDB Server`) or run:
-     ```powershell
-     net start MongoDB
-     ```
-   - Linux/macOS:
-     ```bash
-     sudo systemctl start mongod
-     # or
-     brew services start mongodb-community
-     ```
-
-2. **MongoDB Atlas (Cloud)**:
-   If using MongoDB Atlas, replace `MONGODB_URI` in `server/.env`:
-   ```env
-   MONGODB_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/homeserve?retryWrites=true&w=majority
-   ```
-
-*Resilience Note*: If MongoDB is temporarily offline, the server will **not** crash. The health endpoint will gracefully report `"database": "disconnected"`.
-
----
-
 ## 🚦 How to Run the Application
 
-### 1. Start the Backend Server
+### 1. Database
+Ensure MongoDB is running locally on port `27017`:
+```powershell
+net start MongoDB
+```
+
+### 2. Start Backend API
 ```bash
 cd server
+npm install
 npm run dev
-# Or for standard node start:
-npm start
 ```
 The server will start on `http://localhost:5000`.
 
-### 2. Start the Frontend Client
+### 3. Start Frontend App
 ```bash
 cd client
+npm install
 npm run dev
 ```
-The frontend will start on `http://localhost:5173`.
+The client will start on `http://localhost:5173`.
 
 ---
 
-## 🧪 Verification & Health Check
+## 🧪 Testing & Verification
 
-### API Health Check
-Send a `GET` request to:
+Run the automated backend test suites:
+```bash
+cd server
+npm test
 ```
-http://localhost:5000/api/health
+The test suite covers:
+- **Security Invariants**: Rate limiting, NoSQL query sanitization, 50KB payload guard, Helmet HTTP headers, CORS validation.
+- **Review Engine**: Verified review posting, automated technician rating aggregation, and admin moderation controls.
+- **Admin Analytics**: Revenue computation, monthly trends, technician ranking, and category metrics.
+
+To verify frontend production bundle:
+```bash
+cd client
+npm run build
 ```
-
-**Expected response when MongoDB is connected:**
-```json
-{
-  "success": true,
-  "message": "HomeServe API is running",
-  "database": "connected"
-}
-```
-
-### Frontend Verification
-1. Open `http://localhost:5173` in your browser.
-2. Observe the **Full-Stack Connection Verification** card on the homepage:
-   - Express Backend status: **Online**
-   - MongoDB status: **Connected** (queried dynamically from `/api/health`)
-   - Frontend Axios Client: Active with live round-trip latency in milliseconds.
-

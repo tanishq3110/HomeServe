@@ -34,6 +34,13 @@ const protect = async (req, res, next) => {
     // Verify token
     const decoded = jwt.verify(token, secret);
 
+    if (!decoded || !decoded.id || !require('mongoose').Types.ObjectId.isValid(decoded.id)) {
+      return res.status(401).json({
+        success: false,
+        message: 'Invalid authentication token claims.',
+      });
+    }
+
     // Find user by ID (exclude password)
     const user = await User.findById(decoded.id).select('-password');
 

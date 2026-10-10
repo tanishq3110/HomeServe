@@ -52,8 +52,9 @@ const getAllTechnicians = async (req, res) => {
 
     // If search query provided, find matching user IDs first
     let userIdFilter = null;
-    if (search && search.trim()) {
-      const searchRegex = new RegExp(search.trim(), 'i');
+    if (search && typeof search === 'string' && search.trim()) {
+      const safeSearch = search.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const searchRegex = new RegExp(safeSearch, 'i');
       const matchingUsers = await User.find({
         $or: [{ name: searchRegex }, { email: searchRegex }],
       }).select('_id');

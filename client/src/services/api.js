@@ -33,6 +33,15 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
+    // If session expired or unauthorized (401), clean stored credentials (except during login)
+    if (error.response?.status === 401 && !error.config?.url?.includes('/auth/login')) {
+      try {
+        localStorage.removeItem('token');
+      } catch {
+        // Ignore storage access errors
+      }
+    }
+
     // Extract server message or fallback
     const message =
       error.response?.data?.message ||
@@ -350,6 +359,105 @@ export const bookingService = {
    */
   adminGetAll: async (params = {}) => {
     const response = await api.get('/bookings', { params });
+    return response.data;
+  },
+};
+
+// Review Service (Phase 11)
+export const reviewService = {
+  /**
+   * Submit a review for a completed booking (CUSTOMER only)
+   * @param {{ bookingId: string, rating: number, comment?: string }} reviewData
+   * @returns {Promise<{success: boolean, data: object}>}
+   */
+  create: async (reviewData) => {
+    const response = await api.post('/reviews', reviewData);
+    return response.data;
+  },
+
+  /**
+   * Get the authenticated customer's own reviews
+   * @param {{ page?: number, limit?: number }} [params]
+   * @returns {Promise<{success: boolean, data: object}>}
+   */
+  getMyReviews: async (params = {}) => {
+    const response = await api.get('/reviews/my', { params });
+    return response.data;
+  },
+
+  /**
+   * Get review for a specific booking (CUSTOMER/TECHNICIAN/ADMIN)
+   * @param {string} bookingId
+   * @returns {Promise<{success: boolean, data: object|null}>}
+   */
+  getByBookingId: async (bookingId) => {
+    const response = await api.get(`/reviews/booking/${bookingId}`);
+    return response.data;
+  },
+
+  /**
+   * Get paginated reviews for a technician (public)
+   * @param {string} technicianId
+   * @param {{ page?: number, limit?: number }} [params]
+   * @returns {Promise<{success: boolean, data: object}>}
+   */
+  getForTechnician: async (technicianId, params = {}) => {
+    const response = await api.get(`/reviews/technician/${technicianId}`, { params });
+    return response.data;
+  },
+
+  // ── Admin ───────────────────────────────────────────────────────────────
+
+  /**
+   * Admin: list all reviews with optional filters
+   * @param {{ technicianId?: string, customerId?: string, rating?: number, page?: number, limit?: number }} [params]
+   * @returns {Promise<{success: boolean, count: number, data: Array}>}
+   */
+  adminGetAll: async (params = {}) => {
+    const response = await api.get('/reviews/admin', { params });
+    return response.data;
+  },
+
+  /**
+   * Admin: delete a review (moderation)
+   * @param {string} reviewId
+   * @returns {Promise<{success: boolean, message: string}>}
+   */
+  adminDelete: async (reviewId) => {
+    const response = await api.delete(`/reviews/${reviewId}`);
+    return response.data;
+  },
+};
+
+// Admin Analytics Service (Phase 12)
+export const adminAnalyticsService = {
+  /**
+   * Get analytics overview including KPIs, distributions, trends, and recent activity
+   * @param {{ days?: number }} [params]
+   * @returns {Promise<{success: boolean, data: object}>}
+   */
+  getOverview: async (params = {}) => {
+    const response = await api.get('/admin/analytics/overview', { params });
+    return response.data;
+  },
+
+  /**
+   * Get booking trends for a date range (7, 30, 90 days)
+   * @param {{ days?: number }} [params]
+   * @returns {Promise<{success: boolean, data: {days: number, trends: Array}}>}
+   */
+  getTrends: async (params = {}) => {
+    const response = await api.get('/admin/analytics/trends', { params });
+    return response.data;
+  },
+
+  /**
+   * Get recent activity feed
+   * @param {{ limit?: number }} [params]
+   * @returns {Promise<{success: boolean, data: {bookings: Array, reviews: Array}}>}
+   */
+  getRecentActivity: async (params = {}) => {
+    const response = await api.get('/admin/analytics/recent', { params });
     return response.data;
   },
 };

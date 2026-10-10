@@ -11,7 +11,8 @@ import {
   ShieldCheck, 
   Wrench, 
   Sparkles,
-  Calendar 
+  Calendar,
+  BarChart3 
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
@@ -129,11 +130,17 @@ const Navbar = () => {
             )}
             {user?.role === 'ADMIN' && (
               <>
+                <NavLink to="/admin/analytics" className={navLinkClasses}>
+                  Analytics
+                </NavLink>
                 <NavLink to="/admin/technicians" className={navLinkClasses}>
                   Technicians
                 </NavLink>
                 <NavLink to="/admin/bookings" className={navLinkClasses}>
                   Bookings
+                </NavLink>
+                <NavLink to="/admin/reviews" className={navLinkClasses}>
+                  Reviews
                 </NavLink>
               </>
             )}
@@ -230,6 +237,14 @@ const Navbar = () => {
                     {user?.role === 'ADMIN' && (
                       <>
                         <Link
+                          to="/admin/analytics"
+                          onClick={() => setUserDropdownOpen(false)}
+                          className="flex items-center gap-2 px-4 py-2 text-xs font-semibold text-slate-200 hover:text-white hover:bg-white/10 transition-colors"
+                        >
+                          <BarChart3 className="w-4 h-4 text-brand-accent" />
+                          <span>Analytics Dashboard</span>
+                        </Link>
+                        <Link
                           to="/admin/technicians"
                           onClick={() => setUserDropdownOpen(false)}
                           className="flex items-center gap-2 px-4 py-2 text-xs font-semibold text-slate-200 hover:text-white hover:bg-white/10 transition-colors"
@@ -244,6 +259,14 @@ const Navbar = () => {
                         >
                           <Calendar className="w-4 h-4 text-brand-accent" />
                           <span>Manage Bookings</span>
+                        </Link>
+                        <Link
+                          to="/admin/reviews"
+                          onClick={() => setUserDropdownOpen(false)}
+                          className="flex items-center gap-2 px-4 py-2 text-xs font-semibold text-slate-200 hover:text-white hover:bg-white/10 transition-colors"
+                        >
+                          <Sparkles className="w-4 h-4 text-brand-accent" />
+                          <span>Manage Reviews</span>
                         </Link>
                       </>
                     )}
@@ -396,6 +419,13 @@ const Navbar = () => {
             {isAuthenticated && user?.role === 'ADMIN' && (
               <>
                 <NavLink
+                  to="/admin/analytics"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={mobileNavLinkClasses}
+                >
+                  Analytics Dashboard
+                </NavLink>
+                <NavLink
                   to="/admin/technicians"
                   onClick={() => setMobileMenuOpen(false)}
                   className={mobileNavLinkClasses}
@@ -408,6 +438,13 @@ const Navbar = () => {
                   className={mobileNavLinkClasses}
                 >
                   Manage Bookings
+                </NavLink>
+                <NavLink
+                  to="/admin/reviews"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={mobileNavLinkClasses}
+                >
+                  Manage Reviews
                 </NavLink>
               </>
             )}

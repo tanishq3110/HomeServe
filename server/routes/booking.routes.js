@@ -83,38 +83,40 @@ router.get('/technician/my', authorize('TECHNICIAN'), getTechnicianBookings);
  */
 router.get('/', authorize('ADMIN'), adminGetAllBookings);
 
+const { validateObjectIdParams } = require('../middleware/security.middleware');
+
 // ── Parameterized routes (:id) ─────────────────────────────────────────────
 
 /**
  * GET /api/bookings/:id
  * Accessible to CUSTOMER (own), TECHNICIAN (assigned), ADMIN (all)
  */
-router.get('/:id', authorize('CUSTOMER', 'TECHNICIAN', 'ADMIN'), getBookingById);
+router.get('/:id', validateObjectIdParams('id'), authorize('CUSTOMER', 'TECHNICIAN', 'ADMIN'), getBookingById);
 
 /**
  * GET /api/bookings/:id/location
  * Get latest live GPS coordinates for an active booking
  */
-router.get('/:id/location', authorize('CUSTOMER', 'TECHNICIAN', 'ADMIN'), getBookingLocation);
+router.get('/:id/location', validateObjectIdParams('id'), authorize('CUSTOMER', 'TECHNICIAN', 'ADMIN'), getBookingLocation);
 
 /**
  * PATCH /api/bookings/:id/cancel — customer cancels eligible booking
  */
-router.patch('/:id/cancel', authorize('CUSTOMER'), cancelBooking);
+router.patch('/:id/cancel', validateObjectIdParams('id'), authorize('CUSTOMER'), cancelBooking);
 
 /**
  * PATCH /api/bookings/:id/accept — technician accepts assigned request
  */
-router.patch('/:id/accept', authorize('TECHNICIAN'), acceptBooking);
+router.patch('/:id/accept', validateObjectIdParams('id'), authorize('TECHNICIAN'), acceptBooking);
 
 /**
  * PATCH /api/bookings/:id/reject — technician rejects assigned request
  */
-router.patch('/:id/reject', authorize('TECHNICIAN'), rejectBooking);
+router.patch('/:id/reject', validateObjectIdParams('id'), authorize('TECHNICIAN'), rejectBooking);
 
 /**
  * PATCH /api/bookings/:id/status — technician updates job status
  */
-router.patch('/:id/status', authorize('TECHNICIAN'), updateBookingStatus);
+router.patch('/:id/status', validateObjectIdParams('id'), authorize('TECHNICIAN'), updateBookingStatus);
 
 module.exports = router;

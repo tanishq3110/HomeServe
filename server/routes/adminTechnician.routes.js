@@ -7,6 +7,7 @@ const {
   rejectTechnician,
 } = require('../controllers/adminTechnician.controller');
 const { protect, authorize } = require('../middleware/auth.middleware');
+const { validateObjectIdParams } = require('../middleware/security.middleware');
 
 // All routes require authentication and ADMIN role
 router.use(protect);
@@ -24,19 +25,19 @@ router.get('/technicians', getAllTechnicians);
  * GET /api/admin/technicians/:id
  * Full details of a single technician profile.
  */
-router.get('/technicians/:id', getTechnicianById);
+router.get('/technicians/:id', validateObjectIdParams('id'), getTechnicianById);
 
 /**
  * PATCH /api/admin/technicians/:id/approve
  * Approve a technician application.
  */
-router.patch('/technicians/:id/approve', approveTechnician);
+router.patch('/technicians/:id/approve', validateObjectIdParams('id'), approveTechnician);
 
 /**
  * PATCH /api/admin/technicians/:id/reject
  * Reject a technician application.
  * @body rejectionReason (optional string)
  */
-router.patch('/technicians/:id/reject', rejectTechnician);
+router.patch('/technicians/:id/reject', validateObjectIdParams('id'), rejectTechnician);
 
 module.exports = router;

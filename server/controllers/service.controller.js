@@ -14,13 +14,15 @@ const getServices = async (req, res) => {
     const query = { isActive: true };
 
     // Category filter
-    if (category && category.trim() !== '' && category.toLowerCase() !== 'all') {
-      query.category = { $regex: new RegExp(`^${category.trim()}$`, 'i') };
+    if (category && typeof category === 'string' && category.trim() !== '' && category.toLowerCase() !== 'all') {
+      const safeCat = category.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      query.category = { $regex: new RegExp(`^${safeCat}$`, 'i') };
     }
 
     // Keyword search filter (across name, category, tagline, shortDesc)
-    if (search && search.trim() !== '') {
-      const searchRegex = new RegExp(search.trim(), 'i');
+    if (search && typeof search === 'string' && search.trim() !== '') {
+      const safeSearch = search.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const searchRegex = new RegExp(safeSearch, 'i');
       query.$or = [
         { name: searchRegex },
         { category: searchRegex },
@@ -224,6 +226,16 @@ const updateService = async (req, res) => {
         success: false,
         message: `Service '${id}' not found.`,
       });
+    }
+
+    if (req.body.startingPrice !== undefined) {
+      const price = Number(req.body.startingPrice);
+      if (!Number.isFinite(price) || price < 0) {
+        return res.status(400).json({
+          success: false,
+          message: 'Starting price must be a non-negative number.',
+        });
+      }
     }
 
     // Apply updates
