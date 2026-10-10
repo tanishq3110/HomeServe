@@ -34,6 +34,9 @@ import TestimonialCard from '../components/cards/TestimonialCard';
 import SectionHeading from '../components/common/SectionHeading';
 import { healthService, serviceService } from '../services/api';
 import heroTechnicianImg from '../assets/images/hero-technician.jpg';
+import heroCleanerImg from '../assets/images/hero-cleaner.jpg';
+import heroBathroomImg from '../assets/images/hero-bathroom.jpg';
+import heroElectricianImg from '../assets/images/hero-electrician.jpg';
 import MobileBottomNav from '../components/common/MobileBottomNav';
 
 const HomePage = () => {
@@ -188,74 +191,72 @@ const HomePage = () => {
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center relative z-10">
           
           {/* Hero Left Content Column */}
-          <div className="lg:col-span-7 space-y-7 text-center lg:text-left">
+          <div className="lg:col-span-6 space-y-6 text-center lg:text-left">
             
-            {/* Live Hyperlocal Network Status Pill */}
-            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/5 border border-white/15 backdrop-blur-md shadow-sm">
-              <span className="relative flex h-2.5 w-2.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+            {/* Live Tracking Available in Bangalore Pill */}
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-orange-500/30 bg-orange-500/10 text-orange-400 text-xs font-semibold backdrop-blur-sm shadow-sm">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
               </span>
-              <span className="text-xs font-bold tracking-wide text-emerald-400">
-                184+ Verified Technicians Online
-              </span>
-              <span className="text-white/30 text-xs">•</span>
-              <span className="text-xs font-medium text-slate-300">
-                {selectedLocation} Hub
-              </span>
+              <span>Live Tracking Available in Bangalore</span>
             </div>
 
             {/* Main Headline */}
-            <div className="space-y-3">
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight text-white">
-                Trusted <span className="text-[#FF5A1F]">Home Services</span> <br />
-                At Your Fingertips
+            <div className="space-y-4">
+              <h1 className="text-4xl sm:text-5xl lg:text-[62px] font-black tracking-tight leading-[1.08] text-white">
+                Expert Home<br />
+                Services,<br />
+                <span className="text-[#FF5A1F]">In 30 Minutes.</span>
               </h1>
-              <p className="max-w-xl text-slate-300 text-sm sm:text-base leading-relaxed mx-auto lg:mx-0 font-normal">
-                Professional, verified technicians for all your home service needs.
+              <p className="max-w-lg text-slate-400 text-sm sm:text-base leading-relaxed mx-auto lg:mx-0 font-normal">
+                Skip the wait. Book verified electricians, plumbers, and cleaning professionals instantly. Backed by our 30-day rework warranty.
               </p>
             </div>
 
-            {/* Elevated Pill Search Console matching mockup Screen 1 */}
+            {/* Dark Pill Search Console */}
             <form
               onSubmit={handleHeroSearchSubmit}
-              className="max-w-xl bg-white rounded-full p-1.5 pl-4 shadow-2xl flex items-center justify-between border border-white/20 mx-auto lg:mx-0"
+              className="max-w-xl bg-[#0F172A]/90 backdrop-blur-md rounded-full p-2 pl-4 sm:pl-5 shadow-2xl flex items-center border border-slate-800 focus-within:border-slate-700 transition mx-auto lg:mx-0"
             >
-              <div className="flex items-center gap-2.5 flex-1 mr-2">
+              <div className="flex items-center gap-2.5 flex-1 min-w-0 mr-2">
                 <Search className="w-4 h-4 text-slate-400 flex-shrink-0" />
                 <input
                   type="text"
                   value={heroSearch}
                   onChange={(e) => setHeroSearch(e.target.value)}
-                  placeholder="Search for a service (e.g. AC Repair, Plumbing...)"
-                  className="w-full text-slate-800 placeholder-slate-400 bg-transparent text-xs sm:text-sm focus:outline-none font-medium"
+                  placeholder="e.g. AC Repair, Plumber..."
+                  className="w-full text-white placeholder-slate-500 bg-transparent text-xs sm:text-sm focus:outline-none font-medium"
                 />
+              </div>
+
+              <div className="hidden sm:flex items-center gap-1.5 px-3 border-l border-slate-800 text-slate-300 text-xs sm:text-sm font-medium">
+                <MapPin className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                <span>{selectedLocation}</span>
               </div>
 
               <button
                 type="submit"
-                className="w-10 h-10 rounded-full bg-[#FF5A1F] hover:bg-orange-600 text-white flex items-center justify-center transition-all shadow-md shadow-orange-500/30 flex-shrink-0 cursor-pointer"
-                aria-label="Search"
+                className="bg-[#FF5A1F] hover:bg-orange-600 text-white font-semibold text-xs sm:text-sm px-5 sm:px-6 py-2.5 sm:py-3 rounded-full flex items-center gap-1.5 shadow-lg shadow-orange-500/25 transition-all flex-shrink-0 cursor-pointer"
               >
-                <Search className="w-4 h-4" />
+                <span>Search</span>
+                <ChevronRight className="w-4 h-4" />
               </button>
             </form>
 
-            {/* Popular Trending Suggestions */}
-            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-1.5 text-xs text-slate-400">
-              <span className="font-semibold text-slate-400">Trending:</span>
+            {/* Popular Tags */}
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2 text-xs">
+              <span className="text-slate-500 font-medium">Popular:</span>
               {[
-                'AC Jet Wash',
-                'Bathroom Deep Clean',
-                'Switchboard Repair',
-                'Water Leakage',
-                'Ceiling Fan Fix'
+                'AC Service',
+                'Deep Cleaning',
+                'Electrician'
               ].map((tag) => (
                 <button
                   key={tag}
                   type="button"
                   onClick={() => handleQuickTagClick(tag)}
-                  className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/5 transition-colors cursor-pointer"
+                  className="px-3.5 py-1 rounded-full border border-slate-800 bg-slate-900/60 hover:bg-slate-800/90 hover:border-slate-700 text-slate-300 hover:text-white transition cursor-pointer font-medium"
                 >
                   {tag}
                 </button>
@@ -264,91 +265,66 @@ const HomePage = () => {
 
           </div>
 
-          {/* Hero Right Visual Showcase (Rich Layered Composite) */}
-          <div className="lg:col-span-5 relative mt-6 lg:mt-0">
-            <div className="relative mx-auto max-w-lg">
+          {/* Hero Right Visual Showcase (Multi-Image Overlapping Collage) */}
+          <div className="lg:col-span-6 relative mt-12 lg:mt-0 flex justify-center lg:justify-end">
+            <div className="relative w-full max-w-[480px] sm:max-w-[500px]">
               
-              {/* Outer Glow Halo */}
-              <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-brand-accent/40 via-orange-500/20 to-amber-500/40 opacity-70 blur-xl transition-all duration-500" />
+              {/* Subtle ambient back-glow */}
+              <div className="absolute inset-0 bg-gradient-to-tr from-orange-500/15 via-blue-500/10 to-transparent rounded-[36px] blur-3xl opacity-60 pointer-events-none" />
 
-              {/* Main Visual Container */}
-              <div className="relative rounded-3xl bg-slate-900 border border-white/15 overflow-hidden shadow-2xl">
-                
-                {/* Hero Technician Image */}
-                <div className="relative aspect-[4/4] sm:aspect-[4/4.2] overflow-hidden">
-                  <img
-                    src={heroTechnicianImg}
-                    alt="Professional HomeServe Technician"
-                    className="w-full h-full object-cover object-top filter brightness-[0.98] contrast-[1.02] transform transition-transform duration-700 hover:scale-105"
-                  />
-                  {/* Subtle Gradient Overlays for integration */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent opacity-85 pointer-events-none" />
-                  <div className="absolute inset-0 bg-gradient-to-b from-slate-950/40 via-transparent to-transparent pointer-events-none" />
+              {/* Center Main Image (Cleaner wiping window blinds) */}
+              <div className="relative mx-auto w-[82%] sm:w-[84%] aspect-[3/3.8] rounded-[32px] overflow-hidden border border-white/10 shadow-2xl bg-slate-900">
+                <img
+                  src={heroCleanerImg}
+                  alt="Professional Home Cleaner"
+                  className="w-full h-full object-cover object-top filter brightness-[0.98] contrast-[1.02]"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent pointer-events-none" />
+              </div>
+
+              {/* Top-Right Inset Floating Image (Luxury clean bathroom) */}
+              <div className="absolute -top-6 -right-2 sm:-top-8 sm:-right-4 w-36 h-36 sm:w-44 sm:h-44 rounded-[26px] overflow-hidden border-4 border-[#090D16] shadow-2xl z-20 bg-slate-900">
+                <img
+                  src={heroBathroomImg}
+                  alt="Spotless Bathroom Renovation"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+
+              {/* Bottom-Left Inset Floating Image (Electrician in helmet with switchboard) */}
+              <div className="absolute -bottom-6 -left-2 sm:-bottom-8 sm:-left-4 w-40 h-40 sm:w-48 sm:h-48 rounded-[26px] overflow-hidden border-4 border-[#090D16] shadow-2xl z-20 bg-slate-900">
+                <img
+                  src={heroElectricianImg}
+                  alt="Verified Electrician"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute bottom-2.5 left-2.5 px-2.5 py-1 rounded-full bg-slate-950/80 backdrop-blur-md border border-white/10 text-[10px] font-bold text-white flex items-center gap-1 shadow-lg">
+                  <ShieldCheck className="w-3 h-3 text-emerald-400" />
+                  <span>Verified Pro</span>
                 </div>
+              </div>
 
-                {/* Floating Card 1: Rapid Dispatch Status (Top-Left) */}
-                <div className="absolute top-4 left-4 z-20 animate-float-slow">
-                  <div className="backdrop-blur-xl bg-slate-950/85 border border-white/20 p-3.5 rounded-2xl shadow-2xl flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-orange-500/25 border border-orange-500/40 text-brand-accent flex items-center justify-center flex-shrink-0">
-                      <Zap className="w-5 h-5 fill-brand-accent" />
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-1.5">
-                        <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                        <span className="text-[10px] font-extrabold uppercase tracking-wider text-brand-accent">
-                          Rapid Dispatch
-                        </span>
-                      </div>
-                      <h4 className="text-xs font-bold text-white">Technician En Route</h4>
-                      <p className="text-[11px] text-slate-300 font-semibold mt-0.5">
-                        ETA: <strong className="text-emerald-400">18 mins</strong> ({selectedLocation})
-                      </p>
-                    </div>
-                  </div>
+              {/* Floating Badge 1 (Top-Left of center card): 4.9/5 Rating */}
+              <div className="absolute top-10 -left-4 sm:top-12 sm:-left-8 z-30 bg-[#0B1120]/95 backdrop-blur-md border border-slate-800/90 rounded-2xl p-3 px-3.5 sm:px-4 shadow-2xl flex items-center gap-3">
+                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 flex items-center justify-center flex-shrink-0">
+                  <Star className="w-4 h-4 sm:w-5 sm:h-5 fill-emerald-400 text-emerald-400" />
                 </div>
-
-                {/* Floating Card 2: Top Rated Technician Card (Bottom-Right) */}
-                <div className="absolute bottom-20 right-4 z-20 animate-float-reverse">
-                  <div className="backdrop-blur-xl bg-slate-950/90 border border-emerald-500/30 p-3.5 rounded-2xl shadow-2xl max-w-[240px]">
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-9 h-9 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 flex items-center justify-center flex-shrink-0 font-bold text-xs">
-                        <ShieldCheck className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <div className="flex items-center gap-1">
-                          <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
-                          <span className="text-xs font-extrabold text-white">4.9 / 5</span>
-                          <span className="text-[10px] text-slate-400">(420+)</span>
-                        </div>
-                        <p className="text-xs font-bold text-white leading-tight mt-0.5">
-                          Rajesh Kumar
-                        </p>
-                        <p className="text-[10px] text-brand-accent font-medium">
-                          Master Electrician & AC Pro
-                        </p>
-                      </div>
-                    </div>
-                  </div>
+                <div>
+                  <p className="text-xs sm:text-sm font-bold text-white tracking-tight leading-tight">4.9/5 Rating</p>
+                  <p className="text-[10px] sm:text-[11px] text-slate-400 font-medium">Based on 50k+ reviews</p>
                 </div>
+              </div>
 
-                {/* Bottom Bar: Live Performance Stat Strip */}
-                <div className="absolute bottom-0 inset-x-0 p-4 bg-slate-950/80 backdrop-blur-md border-t border-white/10 z-20">
-                  <div className="grid grid-cols-3 divide-x divide-white/10 text-center">
-                    <div className="px-2">
-                      <p className="text-base font-black text-white">24m</p>
-                      <p className="text-[10px] uppercase font-semibold tracking-wider text-slate-400">Avg Arrival</p>
-                    </div>
-                    <div className="px-2">
-                      <p className="text-base font-black text-brand-accent">₹199</p>
-                      <p className="text-[10px] uppercase font-semibold tracking-wider text-slate-400">Starts At</p>
-                    </div>
-                    <div className="px-2">
-                      <p className="text-base font-black text-emerald-400">98.8%</p>
-                      <p className="text-[10px] uppercase font-semibold tracking-wider text-slate-400">On-Time</p>
-                    </div>
-                  </div>
+              {/* Floating Badge 2 (Bottom-Right of center card): 24m Avg. Arrival */}
+              <div className="absolute -bottom-2 right-2 sm:-bottom-4 sm:right-4 z-30 bg-[#0B1120]/95 backdrop-blur-md border border-slate-800/90 rounded-2xl p-3 px-3.5 sm:px-4 shadow-2xl flex items-center gap-3">
+                <div className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-amber-500/20 border border-amber-500/30 text-amber-400 flex items-center justify-center flex-shrink-0">
+                  <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-amber-400" />
+                  <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-orange-500"></span>
                 </div>
-
+                <div>
+                  <p className="text-xs sm:text-sm font-bold text-white tracking-tight leading-tight">24m Avg. Arrival</p>
+                  <p className="text-[10px] sm:text-[11px] text-slate-400 font-medium">Fastest in Bangalore</p>
+                </div>
               </div>
 
             </div>
