@@ -25,6 +25,27 @@ const iconMap = {
   ShieldAlert,
 };
 
+const FALLBACK_CATEGORY_IMAGES = {
+  'AC': '/images/service-ac.jpg',
+  'AC Repair': '/images/service-ac.jpg',
+  'Electrical': '/images/hero-electrician.jpg',
+  'Plumbing': '/images/service-plumbing.jpg',
+  'Cleaning': '/images/hero-cleaner.jpg',
+  'Painting': 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&w=800&q=80',
+  'Carpentry': 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80',
+  'Appliance Repair': 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80',
+  'Pest Control': 'https://images.unsplash.com/photo-1628177142898-93e36e4e3a50?auto=format&fit=crop&w=800&q=80',
+  DEFAULT: '/images/service-ac.jpg',
+};
+
+const getServiceImage = (service) => {
+  if (service?.image && typeof service.image === 'string' && service.image.trim() !== '') {
+    return service.image;
+  }
+  const cat = service?.category || '';
+  return FALLBACK_CATEGORY_IMAGES[cat] || FALLBACK_CATEGORY_IMAGES.DEFAULT;
+};
+
 const ServiceCard = ({ service, compact = false }) => {
   const IconComponent = iconMap[service.iconName] || Sparkles;
   const serviceSlug = service.slug || service.id || service._id;
@@ -67,9 +88,16 @@ const ServiceCard = ({ service, compact = false }) => {
       {/* Thumbnail with overlay & icon badge */}
       <div className="relative h-48 w-full overflow-hidden bg-slate-100">
         <img
-          src={service.image}
+          src={getServiceImage(service)}
           alt={service.name}
           loading="lazy"
+          onError={(e) => {
+            e.currentTarget.onerror = null;
+            const fallback = FALLBACK_CATEGORY_IMAGES[service?.category] || FALLBACK_CATEGORY_IMAGES.DEFAULT;
+            if (e.currentTarget.src !== fallback) {
+              e.currentTarget.src = fallback;
+            }
+          }}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80" />

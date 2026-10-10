@@ -24,7 +24,8 @@ import {
   Droplets,
   Paintbrush,
   Check,
-  ChevronRight
+  ChevronRight,
+  ChevronDown
 } from 'lucide-react';
 import { techniciansData } from '../data/techniciansData';
 import { testimonialsData } from '../data/testimonialsData';
@@ -43,6 +44,7 @@ const HomePage = () => {
   const navigate = useNavigate();
   const [heroSearch, setHeroSearch] = useState('');
   const [selectedLocation, setSelectedLocation] = useState('Bangalore');
+  const [heroLocationOpen, setHeroLocationOpen] = useState(false);
 
   // Live MongoDB Services State
   const [services, setServices] = useState([]);
@@ -190,77 +192,164 @@ const HomePage = () => {
 
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center relative z-10">
           
-          {/* Hero Left Content Column */}
+          {/* Hero Left Content Column - Redesigned & Elevated */}
           <div className="lg:col-span-6 space-y-6 text-center lg:text-left">
             
-            {/* Live Tracking Available in Bangalore Pill */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-orange-200 bg-white/90 shadow-sm text-orange-600 text-xs font-bold backdrop-blur-sm">
-              <span className="relative flex h-2 w-2">
+            {/* Live Telemetry Status Pill */}
+            <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full border border-orange-200/90 bg-white shadow-sm shadow-orange-500/5 text-xs font-bold text-slate-800 backdrop-blur-md hover:border-orange-300 transition-all">
+              <span className="relative flex h-2.5 w-2.5">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-orange-500"></span>
               </span>
-              <span>Live Tracking Available in Bangalore</span>
+              <span className="text-orange-600 font-extrabold uppercase tracking-wide text-[11px]">Live GPS Dispatch</span>
+              <span className="w-1 h-1 rounded-full bg-slate-300"></span>
+              <span className="text-slate-600 font-medium">Available in {selectedLocation}</span>
             </div>
 
-            {/* Main Headline */}
+            {/* Main Headline with Custom Gradient & Underline Accent */}
             <div className="space-y-4">
-              <h1 className="text-4xl sm:text-5xl lg:text-[62px] font-black tracking-tight leading-[1.08] text-slate-900">
+              <h1 className="text-4xl sm:text-5xl lg:text-[64px] font-black tracking-tight leading-[1.05] text-slate-900">
                 Expert Home<br />
                 Services,<br />
-                <span className="text-[#FF5A1F]">In 30 Minutes.</span>
+                <span className="relative inline-block mt-0.5">
+                  <span className="bg-gradient-to-r from-[#FF5A1F] via-orange-500 to-amber-500 bg-clip-text text-transparent">
+                    In 30 Minutes.
+                  </span>
+                  {/* Subtle artistic orange highlighter stroke */}
+                  <svg
+                    className="absolute -bottom-1 left-0 w-full h-2.5 text-orange-200/70 -z-0 pointer-events-none"
+                    viewBox="0 0 300 12"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M3 9C80 3 220 3 297 9"
+                      stroke="currentColor"
+                      strokeWidth="6"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                </span>
               </h1>
               <p className="max-w-lg text-slate-600 text-sm sm:text-base leading-relaxed mx-auto lg:mx-0 font-normal">
-                Skip the wait. Book verified electricians, plumbers, and cleaning professionals instantly. Backed by our 30-day rework warranty.
+                Skip the wait. Book verified electricians, plumbers, and cleaning professionals instantly. Backed by our <span className="font-semibold text-slate-800">30-day rework warranty</span>.
               </p>
             </div>
 
-            {/* Elevated Clean White Pill Search Console */}
-            <form
-              onSubmit={handleHeroSearchSubmit}
-              className="max-w-xl bg-white rounded-full p-2 pl-4 sm:pl-5 shadow-xl shadow-orange-950/5 flex items-center border border-slate-200/90 focus-within:border-orange-400 focus-within:ring-4 focus-within:ring-orange-500/10 transition mx-auto lg:mx-0"
-            >
-              <div className="flex items-center gap-2.5 flex-1 min-w-0 mr-2">
-                <Search className="w-4 h-4 text-slate-400 flex-shrink-0" />
-                <input
-                  type="text"
-                  value={heroSearch}
-                  onChange={(e) => setHeroSearch(e.target.value)}
-                  placeholder="e.g. AC Repair, Plumber..."
-                  className="w-full text-slate-800 placeholder-slate-400 bg-transparent text-xs sm:text-sm focus:outline-none font-medium"
-                />
+            {/* Micro-Perks Quick Strip */}
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3.5 text-xs font-semibold text-slate-600 pt-0.5">
+              <div className="flex items-center gap-1.5 text-slate-700">
+                <ShieldCheck className="w-4 h-4 text-emerald-500" />
+                <span>Verified Pros</span>
               </div>
-
-              <div className="hidden sm:flex items-center gap-1.5 px-3 border-l border-slate-200 text-slate-700 text-xs sm:text-sm font-medium">
-                <MapPin className="w-3.5 h-3.5 text-orange-500 flex-shrink-0" />
-                <span>{selectedLocation}</span>
+              <span className="text-slate-300">•</span>
+              <div className="flex items-center gap-1.5 text-slate-700">
+                <Clock className="w-4 h-4 text-[#FF5A1F]" />
+                <span>30-Min Arrival</span>
               </div>
+              <span className="text-slate-300">•</span>
+              <div className="flex items-center gap-1.5 text-slate-700">
+                <CheckCircle2 className="w-4 h-4 text-cyan-600" />
+                <span>Standard Pricing</span>
+              </div>
+            </div>
 
-              <button
-                type="submit"
-                className="bg-[#FF5A1F] hover:bg-orange-600 text-white font-semibold text-xs sm:text-sm px-5 sm:px-6 py-2.5 sm:py-3 rounded-full flex items-center gap-1.5 shadow-lg shadow-orange-500/30 transition-all flex-shrink-0 cursor-pointer"
+            {/* Elevated Interactive Search Console */}
+            <div className="relative max-w-xl mx-auto lg:mx-0">
+              <form
+                onSubmit={handleHeroSearchSubmit}
+                className="relative bg-white rounded-2xl sm:rounded-full p-2 pl-4 sm:pl-5 shadow-xl shadow-orange-950/10 flex flex-col sm:flex-row items-stretch sm:items-center border-2 border-orange-100 hover:border-orange-300 focus-within:border-orange-500 focus-within:ring-4 focus-within:ring-orange-500/15 transition-all duration-300 gap-2 sm:gap-0"
               >
-                <span>Search</span>
-                <ChevronRight className="w-4 h-4" />
-              </button>
-            </form>
+                {/* Search Input */}
+                <div className="flex items-center gap-3 flex-1 min-w-0 py-1 sm:py-0">
+                  <div className="w-8 h-8 rounded-lg bg-orange-50 text-[#FF5A1F] flex items-center justify-center flex-shrink-0">
+                    <Search className="w-4 h-4" />
+                  </div>
+                  <input
+                    type="text"
+                    value={heroSearch}
+                    onChange={(e) => setHeroSearch(e.target.value)}
+                    placeholder="Search for a service (e.g. AC Repair, Plumbing...)"
+                    className="w-full text-slate-900 placeholder-slate-400 bg-transparent text-sm focus:outline-none font-medium"
+                  />
+                </div>
 
-            {/* Popular Tags */}
-            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2 text-xs">
-              <span className="text-slate-500 font-medium">Popular:</span>
-              {[
-                'AC Service',
-                'Deep Cleaning',
-                'Electrician'
-              ].map((tag) => (
+                {/* Location Dropdown */}
+                <div className="relative border-t sm:border-t-0 sm:border-l border-slate-200 px-3 py-1 sm:py-0 flex items-center">
+                  <button
+                    type="button"
+                    onClick={() => setHeroLocationOpen(!heroLocationOpen)}
+                    className="flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-slate-700 hover:text-orange-600 transition-colors w-full sm:w-auto justify-between sm:justify-start cursor-pointer py-1"
+                  >
+                    <MapPin className="w-3.5 h-3.5 text-[#FF5A1F] flex-shrink-0" />
+                    <span>{selectedLocation}</span>
+                    <ChevronDown className="w-3.5 h-3.5 text-slate-400 ml-0.5" />
+                  </button>
+
+                  {/* City Select Popover */}
+                  {heroLocationOpen && (
+                    <div className="absolute top-full right-0 mt-3 w-44 bg-white border border-slate-200 rounded-2xl shadow-2xl py-1.5 z-50 animate-in fade-in zoom-in-95">
+                      <div className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                        Select City
+                      </div>
+                      {['Bangalore', 'Mumbai', 'Delhi NCR', 'Hyderabad', 'Pune'].map((city) => (
+                        <button
+                          key={city}
+                          type="button"
+                          onClick={() => {
+                            setSelectedLocation(city);
+                            setHeroLocationOpen(false);
+                          }}
+                          className={`w-full text-left px-3 py-2 text-xs font-semibold transition-colors flex items-center justify-between ${
+                            selectedLocation === city
+                              ? 'text-[#FF5A1F] bg-orange-50 font-bold'
+                              : 'text-slate-700 hover:bg-slate-50'
+                          }`}
+                        >
+                          <span>{city}</span>
+                          {selectedLocation === city && <span className="w-1.5 h-1.5 rounded-full bg-[#FF5A1F]"></span>}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Search Button */}
                 <button
-                  key={tag}
-                  type="button"
-                  onClick={() => handleQuickTagClick(tag)}
-                  className="px-3.5 py-1 rounded-full border border-orange-100 bg-white hover:bg-orange-50 hover:border-orange-300 text-slate-700 hover:text-orange-600 shadow-sm transition cursor-pointer font-medium"
+                  type="submit"
+                  className="bg-gradient-to-r from-[#FF5A1F] to-orange-500 hover:from-orange-600 hover:to-orange-700 text-white font-bold text-xs sm:text-sm px-6 py-3 rounded-xl sm:rounded-full flex items-center justify-center gap-1.5 shadow-md shadow-orange-500/30 hover:shadow-orange-500/40 hover:scale-[1.02] active:scale-[0.98] transition-all flex-shrink-0 cursor-pointer"
                 >
-                  {tag}
+                  <span>Search</span>
+                  <ChevronRight className="w-4 h-4" />
                 </button>
-              ))}
+              </form>
+            </div>
+
+            {/* Popular Tags with Category Icons */}
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2 text-xs pt-1">
+              <span className="text-slate-500 font-bold flex items-center gap-1">
+                <Sparkles className="w-3.5 h-3.5 text-orange-500" />
+                Popular:
+              </span>
+              {[
+                { name: 'AC Service', icon: Wind, color: 'text-cyan-700 bg-cyan-50/80 border-cyan-200 hover:bg-cyan-100 hover:border-cyan-300' },
+                { name: 'Deep Cleaning', icon: Sparkles, color: 'text-purple-700 bg-purple-50/80 border-purple-200 hover:bg-purple-100 hover:border-purple-300' },
+                { name: 'Electrician', icon: Zap, color: 'text-amber-700 bg-amber-50/80 border-amber-200 hover:bg-amber-100 hover:border-amber-300' },
+                { name: 'Plumber', icon: Wrench, color: 'text-blue-700 bg-blue-50/80 border-blue-200 hover:bg-blue-100 hover:border-blue-300' },
+              ].map((tag) => {
+                const IconComponent = tag.icon;
+                return (
+                  <button
+                    key={tag.name}
+                    type="button"
+                    onClick={() => handleQuickTagClick(tag.name)}
+                    className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border shadow-sm transition-all duration-200 cursor-pointer font-semibold ${tag.color}`}
+                  >
+                    <IconComponent className="w-3 h-3" />
+                    <span>{tag.name}</span>
+                  </button>
+                );
+              })}
             </div>
 
           </div>

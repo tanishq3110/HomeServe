@@ -173,21 +173,23 @@ const ServiceDetailPage = () => {
             </div>
 
             {/* Service Banner Image */}
-            {service.image && (
-              <div className="relative rounded-3xl overflow-hidden shadow-md border border-slate-200 aspect-video bg-slate-900">
-                <img
-                  src={service.image}
-                  alt={service.name}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-                <div className="absolute bottom-4 left-6 right-6 text-white text-xs sm:text-sm">
-                  <p className="font-semibold drop-shadow-md">
-                    Professional equipment • Standardized rate card • 30-day service warranty
-                  </p>
-                </div>
+            <div className="relative rounded-3xl overflow-hidden shadow-md border border-slate-200 aspect-video bg-slate-900">
+              <img
+                src={service.image || '/images/service-ac.jpg'}
+                alt={service.name}
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = '/images/service-ac.jpg';
+                }}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+              <div className="absolute bottom-4 left-6 right-6 text-white text-xs sm:text-sm">
+                <p className="font-semibold drop-shadow-md">
+                  Professional equipment • Standardized rate card • 30-day service warranty
+                </p>
               </div>
-            )}
+            </div>
 
             {/* 3 Highlight Cards matching Screen 2 */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
