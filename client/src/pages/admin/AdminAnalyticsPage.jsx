@@ -16,6 +16,7 @@ import {
   PieChart as PieChartIcon,
   Activity,
   Layers,
+  Wallet,
 } from 'lucide-react';
 import {
   ResponsiveContainer,
@@ -280,6 +281,14 @@ export default function AdminAnalyticsPage() {
                 </button>
               ))}
             </div>
+
+            <Link
+              to="/admin/wallets"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-xs font-bold rounded-xl shadow-2xs transition"
+            >
+              <Wallet className="w-3.5 h-3.5 text-[#FF5A1F]" />
+              <span>Wallets</span>
+            </Link>
 
             <button
               type="button"

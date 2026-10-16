@@ -12,7 +12,8 @@ import {
   Wrench, 
   Sparkles,
   Calendar,
-  BarChart3 
+  BarChart3,
+  Wallet
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
@@ -119,9 +120,14 @@ const Navbar = () => {
               Services
             </NavLink>
             {user?.role === 'CUSTOMER' && (
-              <NavLink to="/bookings" className={navLinkClasses}>
-                My Bookings
-              </NavLink>
+              <>
+                <NavLink to="/bookings" className={navLinkClasses}>
+                  My Bookings
+                </NavLink>
+                <NavLink to="/wallet" className={navLinkClasses}>
+                  My Wallet
+                </NavLink>
+              </>
             )}
             {user?.role === 'TECHNICIAN' && (
               <NavLink to="/technician/dashboard" className={navLinkClasses}>
@@ -141,6 +147,9 @@ const Navbar = () => {
                 </NavLink>
                 <NavLink to="/admin/reviews" className={navLinkClasses}>
                   Reviews
+                </NavLink>
+                <NavLink to="/admin/wallets" className={navLinkClasses}>
+                  Wallets
                 </NavLink>
               </>
             )}
@@ -203,14 +212,24 @@ const Navbar = () => {
                     </Link>
 
                     {user?.role === 'CUSTOMER' && (
-                      <Link
-                        to="/bookings"
-                        onClick={() => setUserDropdownOpen(false)}
-                        className="flex items-center gap-2 px-4 py-2 text-xs font-semibold text-slate-200 hover:text-white hover:bg-white/10 transition-colors"
-                      >
-                        <Calendar className="w-4 h-4 text-brand-accent" />
-                        <span>My Bookings</span>
-                      </Link>
+                      <>
+                        <Link
+                          to="/bookings"
+                          onClick={() => setUserDropdownOpen(false)}
+                          className="flex items-center gap-2 px-4 py-2 text-xs font-semibold text-slate-200 hover:text-white hover:bg-white/10 transition-colors"
+                        >
+                          <Calendar className="w-4 h-4 text-brand-accent" />
+                          <span>My Bookings</span>
+                        </Link>
+                        <Link
+                          to="/wallet"
+                          onClick={() => setUserDropdownOpen(false)}
+                          className="flex items-center gap-2 px-4 py-2 text-xs font-semibold text-slate-200 hover:text-white hover:bg-white/10 transition-colors"
+                        >
+                          <Wallet className="w-4 h-4 text-brand-accent" />
+                          <span>My Wallet</span>
+                        </Link>
+                      </>
                     )}
 
                     {user?.role === 'TECHNICIAN' && (
@@ -267,6 +286,14 @@ const Navbar = () => {
                         >
                           <Sparkles className="w-4 h-4 text-brand-accent" />
                           <span>Manage Reviews</span>
+                        </Link>
+                        <Link
+                          to="/admin/wallets"
+                          onClick={() => setUserDropdownOpen(false)}
+                          className="flex items-center gap-2 px-4 py-2 text-xs font-semibold text-slate-200 hover:text-white hover:bg-white/10 transition-colors"
+                        >
+                          <Wallet className="w-4 h-4 text-brand-accent" />
+                          <span>Manage Wallets</span>
                         </Link>
                       </>
                     )}
@@ -390,13 +417,22 @@ const Navbar = () => {
               </NavLink>
             )}
             {isAuthenticated && user?.role === 'CUSTOMER' && (
-              <NavLink
-                to="/bookings"
-                onClick={() => setMobileMenuOpen(false)}
-                className={mobileNavLinkClasses}
-              >
-                My Bookings
-              </NavLink>
+              <>
+                <NavLink
+                  to="/bookings"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={mobileNavLinkClasses}
+                >
+                  My Bookings
+                </NavLink>
+                <NavLink
+                  to="/wallet"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={mobileNavLinkClasses}
+                >
+                  My Wallet
+                </NavLink>
+              </>
             )}
             {isAuthenticated && user?.role === 'TECHNICIAN' && (
               <>
@@ -445,6 +481,13 @@ const Navbar = () => {
                   className={mobileNavLinkClasses}
                 >
                   Manage Reviews
+                </NavLink>
+                <NavLink
+                  to="/admin/wallets"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={mobileNavLinkClasses}
+                >
+                  Manage Wallets
                 </NavLink>
               </>
             )}

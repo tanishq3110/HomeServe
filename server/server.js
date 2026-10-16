@@ -59,6 +59,7 @@ const adminTechnicianRoutes = require('./routes/adminTechnician.routes');
 const adminAnalyticsRoutes = require('./routes/adminAnalytics.routes');
 const bookingRoutes = require('./routes/booking.routes');
 const reviewRoutes = require('./routes/review.routes');
+const walletRoutes = require('./routes/wallet.routes');
 
 app.use('/api/health', healthRoutes);
 app.use('/api/auth', authRoutes);
@@ -68,6 +69,7 @@ app.use('/api/admin/analytics', adminAnalyticsRoutes);
 app.use('/api/admin', adminTechnicianRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/reviews', reviewRoutes);
+app.use('/api/wallet', walletRoutes);
 
 // Root route for quick verification
 app.get('/', (req, res) => {

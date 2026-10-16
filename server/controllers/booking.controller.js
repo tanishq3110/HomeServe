@@ -330,6 +330,50 @@ const cancelBooking = async (req, res) => {
     booking.status = 'CANCELLED';
     booking.cancellationReason = cancellationReason ? String(cancellationReason).trim().slice(0, 500) : '';
     booking.cancelledBy = req.user._id;
+
+    // Phase 14: If booking was paid via wallet, automatically refund to customer wallet
+    if (booking.paymentStatus === 'PAID') {
+      try {
+        const Wallet = require('../models/wallet.model');
+        const WalletTransaction = require('../models/walletTransaction.model');
+        const originalDebit = await WalletTransaction.findOne({
+          bookingId: booking._id,
+          type: 'DEBIT',
+          status: 'COMPLETED',
+        });
+        if (originalDebit) {
+          const refundAmountPaise = originalDebit.amountPaise;
+          const idempotencyKey = `refund-${booking._id}`;
+          const existingRefund = await WalletTransaction.findOne({ idempotencyKey });
+          if (!existingRefund) {
+            let userWallet = await Wallet.findOne({ ownerId: booking.customerId });
+            if (!userWallet) {
+              userWallet = await Wallet.create({ ownerId: booking.customerId, balancePaise: 0 });
+            }
+            const updatedWallet = await Wallet.findOneAndUpdate(
+              { _id: userWallet._id, ownerId: booking.customerId },
+              { $inc: { balancePaise: refundAmountPaise } },
+              { new: true }
+            );
+            await WalletTransaction.create({
+              walletId: updatedWallet._id,
+              ownerId: booking.customerId,
+              type: 'REFUND',
+              amountPaise: refundAmountPaise,
+              balanceAfterPaise: updatedWallet.balancePaise,
+              status: 'COMPLETED',
+              idempotencyKey,
+              bookingId: booking._id,
+              description: `Automatic refund for cancelled booking: ${booking.serviceName || 'Service'}.`,
+            });
+            booking.paymentStatus = 'REFUNDED';
+          }
+        }
+      } catch (refundErr) {
+        console.error('[Booking.cancelBooking] Auto-refund error:', refundErr);
+      }
+    }
+
     await booking.save();
 
     const populated = await Booking.findById(booking._id)

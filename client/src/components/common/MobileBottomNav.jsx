@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Home, CalendarCheck, MessageSquare, User } from 'lucide-react';
+import { Home, CalendarCheck, Wallet, User } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 /**
@@ -12,7 +12,7 @@ const MobileBottomNav = () => {
   const navItems = [
     { label: 'Home', to: '/', icon: Home },
     { label: 'Bookings', to: isAuthenticated ? '/bookings' : '/login', icon: CalendarCheck },
-    { label: 'Chat', to: '#chat', icon: MessageSquare, isDummy: true },
+    { label: 'Wallet', to: isAuthenticated ? '/wallet' : '/login', icon: Wallet },
     { label: 'Profile', to: isAuthenticated ? '/profile' : '/login', icon: User },
   ];
 

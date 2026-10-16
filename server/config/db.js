@@ -5,7 +5,10 @@ const mongoose = require('mongoose');
  * Uses MONGODB_URI from environment variables
  */
 const connectDB = async () => {
-  const mongoUri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/homeserve';
+  const mongoUri =
+    process.env.NODE_ENV === 'test' && process.env.MONGODB_TEST_URI
+      ? process.env.MONGODB_TEST_URI
+      : process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/homeserve';
 
   try {
     const conn = await mongoose.connect(mongoUri, {

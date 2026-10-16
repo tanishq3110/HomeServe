@@ -18,6 +18,8 @@ import AdminAnalyticsPage from './pages/admin/AdminAnalyticsPage';
 import NewBookingPage from './pages/bookings/NewBookingPage';
 import MyBookingsPage from './pages/bookings/MyBookingsPage';
 import BookingDetailPage from './pages/bookings/BookingDetailPage';
+import WalletPage from './pages/WalletPage';
+import AdminWalletsPage from './pages/admin/AdminWalletsPage';
 import ProtectedRoute from './components/common/ProtectedRoute';
 import ScrollToTop from './components/common/ScrollToTop';
 
@@ -69,6 +71,16 @@ function App() {
               element={
                 <ProtectedRoute allowedRoles={['CUSTOMER']}>
                   <BookingDetailPage />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* ── Phase 14: Customer Wallet Route ── */}
+            <Route
+              path="wallet"
+              element={
+                <ProtectedRoute allowedRoles={['CUSTOMER']}>
+                  <WalletPage />
                 </ProtectedRoute>
               }
             />
@@ -125,6 +137,14 @@ function App() {
               element={
                 <ProtectedRoute allowedRoles={['ADMIN']}>
                   <AdminReviewsPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="admin/wallets"
+              element={
+                <ProtectedRoute allowedRoles={['ADMIN']}>
+                  <AdminWalletsPage />
                 </ProtectedRoute>
               }
             />

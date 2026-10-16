@@ -462,5 +462,90 @@ export const adminAnalyticsService = {
   },
 };
 
+// Wallet & Transaction Ledger Service (Phase 14)
+export const walletService = {
+  /**
+   * Get authenticated customer's wallet balance
+   * @returns {Promise<{success: boolean, data: {walletId: string, balancePaise: number, balanceRupees: string, currency: string, updatedAt: string}}>}
+   */
+  getWallet: async () => {
+    const response = await api.get('/wallet');
+    return response.data;
+  },
+
+  /**
+   * Get authenticated customer's transaction ledger (paginated)
+   * @param {{ page?: number, limit?: number }} [params]
+   * @returns {Promise<{success: boolean, data: {transactions: Array, pagination: object}}>}
+   */
+  getTransactions: async (params = {}) => {
+    const response = await api.get('/wallet/transactions', { params });
+    return response.data;
+  },
+
+  /**
+   * Pay for an eligible booking from wallet balance
+   * @param {string} bookingId
+   * @returns {Promise<{success: boolean, message: string, data: object}>}
+   */
+  payForBooking: async (bookingId) => {
+    const response = await api.post('/wallet/payments', { bookingId });
+    return response.data;
+  },
+
+  /**
+   * Process refund for a cancelled booking to wallet
+   * @param {string} bookingId
+   * @returns {Promise<{success: boolean, message: string, data: object}>}
+   */
+  refundBooking: async (bookingId) => {
+    const response = await api.post('/wallet/refunds', { bookingId });
+    return response.data;
+  },
+
+  // ── Admin Endpoints ──
+  /**
+   * Admin: list all customer wallets & platform aggregate liability
+   * @param {{ page?: number, limit?: number, search?: string }} [params]
+   * @returns {Promise<{success: boolean, data: {wallets: Array, stats: object, pagination: object}}>}
+   */
+  adminGetAllWallets: async (params = {}) => {
+    const response = await api.get('/wallet/admin', { params });
+    return response.data;
+  },
+
+  /**
+   * Admin: get any customer's wallet balance
+   * @param {string} userId
+   * @returns {Promise<{success: boolean, data: object}>}
+   */
+  adminGetWallet: async (userId) => {
+    const response = await api.get(`/wallet/admin/${userId}`);
+    return response.data;
+  },
+
+  /**
+   * Admin: get any customer's transaction ledger
+   * @param {string} userId
+   * @param {{ page?: number, limit?: number }} [params]
+   * @returns {Promise<{success: boolean, data: {transactions: Array, pagination: object}}>}
+   */
+  adminGetTransactions: async (userId, params = {}) => {
+    const response = await api.get(`/wallet/admin/${userId}/transactions`, { params });
+    return response.data;
+  },
+
+  /**
+   * Admin: manual credit or debit adjustment on a customer's wallet
+   * @param {string} userId
+   * @param {{ type: 'CREDIT'|'DEBIT', amountPaise: number, reason: string }} data
+   * @returns {Promise<{success: boolean, message: string, data: object}>}
+   */
+  adminAdjustBalance: async (userId, data) => {
+    const response = await api.post(`/wallet/admin/${userId}/adjustments`, data);
+    return response.data;
+  },
+};
+
 export default api;
 

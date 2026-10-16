@@ -19,8 +19,10 @@ import {
   Ban,
   ChevronRight,
   Navigation,
+  Wallet,
+  CreditCard,
 } from 'lucide-react';
-import { bookingService, reviewService } from '../../services/api';
+import { bookingService, reviewService, walletService } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 import { useBookingSocket } from '../../hooks/useBookingSocket';
 import ConnectionStatusBadge from '../../components/common/ConnectionStatusBadge';
@@ -157,6 +159,14 @@ const BookingDetailPage = () => {
   const [cancelError, setCancelError] = useState('');
   const [activeTab, setActiveTab] = useState('Tracking');
 
+  // Phase 14: Wallet Payment & Refund state
+  const [walletBalance, setWalletBalance] = useState(null);
+  const [payingWallet, setPayingWallet] = useState(false);
+  const [paymentError, setPaymentError] = useState('');
+  const [paymentSuccess, setPaymentSuccess] = useState('');
+  const [refunding, setRefunding] = useState(false);
+  const [refundMessage, setRefundMessage] = useState('');
+
   // Phase 11: Review state
   const [existingReview, setExistingReview] = useState(null);
   const [reviewLoading, setReviewLoading] = useState(false);
@@ -194,6 +204,15 @@ const BookingDetailPage = () => {
         setIsLocationSharing(Boolean(bRes.data.lastLocation.isSharing));
       }
 
+      // Phase 14: Fetch customer wallet balance
+      if (user?.role === 'CUSTOMER') {
+        walletService.getWallet()
+          .then((wRes) => {
+            if (wRes?.success) setWalletBalance(Number(wRes.data.balanceRupees));
+          })
+          .catch(() => {});
+      }
+
       // Phase 11: Fetch existing review if booking is COMPLETED
       if (bRes.data?.status === 'COMPLETED') {
         setReviewLoading(true);
@@ -207,7 +226,7 @@ const BookingDetailPage = () => {
     } finally {
       setLoading(false);
     }
-  }, [id]);
+  }, [id, user?.role]);
 
   useEffect(() => {
     fetchBooking();
@@ -279,6 +298,40 @@ const BookingDetailPage = () => {
       setCancelError(err.message || 'Cancellation failed.');
     } finally {
       setCancelling(false);
+    }
+  };
+
+  const handlePayWithWallet = async () => {
+    setPayingWallet(true);
+    setPaymentError('');
+    setPaymentSuccess('');
+    try {
+      const res = await walletService.payForBooking(id);
+      if (res.success) {
+        setPaymentSuccess(res.message || 'Payment completed successfully from wallet!');
+        fetchBooking();
+      }
+    } catch (err) {
+      setPaymentError(err.message || 'Payment failed.');
+    } finally {
+      setPayingWallet(false);
+    }
+  };
+
+  const handleClaimRefund = async () => {
+    setRefunding(true);
+    setPaymentError('');
+    setRefundMessage('');
+    try {
+      const res = await walletService.refundBooking(id);
+      if (res.success) {
+        setRefundMessage(res.message || 'Refund credited back to your wallet.');
+        fetchBooking();
+      }
+    } catch (err) {
+      setPaymentError(err.message || 'Refund failed.');
+    } finally {
+      setRefunding(false);
     }
   };
 
@@ -581,10 +634,114 @@ const BookingDetailPage = () => {
               </div>
               <div className="mt-3 pt-3 border-t border-slate-100 flex justify-between text-xs">
                 <span className="text-slate-500 font-medium">Payment Status</span>
-                <span className={`font-bold ${booking.paymentStatus === 'PAID' ? 'text-emerald-600' : 'text-amber-600'}`}>
+                <span className={`font-bold ${
+                  booking.paymentStatus === 'PAID' ? 'text-emerald-600' :
+                  booking.paymentStatus === 'REFUNDED' ? 'text-blue-600' : 'text-amber-600'
+                }`}>
                   {booking.paymentStatus}
                 </span>
               </div>
+
+              {/* Phase 14: Payment Status Card & Wallet Payment Action */}
+              {booking.paymentStatus === 'PAID' && (
+                <div className="mt-4 p-3.5 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center justify-between text-xs">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+                    <div>
+                      <span className="font-bold text-emerald-900 block">Payment Completed</span>
+                      <span className="text-[11px] text-emerald-700">Settled securely via HomeServe Wallet</span>
+                    </div>
+                  </div>
+                  <span className="text-xs font-mono font-black text-emerald-700">₹{booking.totalPrice}</span>
+                </div>
+              )}
+
+              {booking.paymentStatus === 'REFUNDED' && (
+                <div className="mt-4 p-3.5 bg-blue-50 border border-blue-200 rounded-xl flex items-center justify-between text-xs">
+                  <div className="flex items-center gap-2">
+                    <RotateCcw className="w-4 h-4 text-blue-600 flex-shrink-0" />
+                    <div>
+                      <span className="font-bold text-blue-900 block">Payment Refunded</span>
+                      <span className="text-[11px] text-blue-700">Credited back to your wallet ledger</span>
+                    </div>
+                  </div>
+                  <span className="text-xs font-mono font-black text-blue-700">₹{booking.totalPrice}</span>
+                </div>
+              )}
+
+              {/* Claim Refund for cancelled booking if not yet refunded */}
+              {booking.status === 'CANCELLED' && booking.paymentStatus === 'PAID' && user?.role === 'CUSTOMER' && (
+                <div className="mt-4 space-y-2">
+                  <div className="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-800">
+                    This booking was cancelled. You can claim an immediate internal refund to your wallet.
+                  </div>
+                  <button
+                    onClick={handleClaimRefund}
+                    disabled={refunding}
+                    className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-xs transition flex items-center justify-center gap-2 cursor-pointer"
+                  >
+                    <RotateCcw className={`w-3.5 h-3.5 ${refunding ? 'animate-spin' : ''}`} />
+                    {refunding ? 'Processing Refund...' : `Claim ₹${booking.totalPrice} Refund to Wallet`}
+                  </button>
+                </div>
+              )}
+
+              {/* Eligible for Payment from Wallet */}
+              {user?.role === 'CUSTOMER' &&
+                ['REQUESTED', 'ACCEPTED', 'TECHNICIAN_ASSIGNED'].includes(booking.status) &&
+                booking.paymentStatus !== 'PAID' && (
+                  <div className="mt-4 pt-3 border-t border-slate-100 space-y-3">
+                    <div className="flex items-center justify-between text-xs bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+                      <div className="flex items-center gap-2">
+                        <Wallet className="w-4 h-4 text-[#FF5A1F]" />
+                        <span className="text-slate-600 font-medium">Your Wallet Balance:</span>
+                      </div>
+                      <span className="font-mono font-bold text-slate-900">
+                        ₹{walletBalance !== null ? walletBalance.toFixed(2) : '...'}
+                      </span>
+                    </div>
+
+                    {paymentError && (
+                      <div className="p-2.5 rounded-xl bg-rose-50 border border-rose-200 text-xs text-rose-700 flex items-start gap-2">
+                        <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                        <span>{paymentError}</span>
+                      </div>
+                    )}
+                    {paymentSuccess && (
+                      <div className="p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-700 flex items-start gap-2">
+                        <CheckCircle2 className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                        <span>{paymentSuccess}</span>
+                      </div>
+                    )}
+
+                    {walletBalance !== null && walletBalance < booking.totalPrice ? (
+                      <div className="space-y-1.5">
+                        <button
+                          disabled
+                          className="w-full py-2.5 bg-slate-100 text-slate-400 font-bold text-xs rounded-xl border border-slate-200 cursor-not-allowed flex items-center justify-center gap-2"
+                        >
+                          <CreditCard className="w-3.5 h-3.5" />
+                          Insufficient Wallet Balance (₹{walletBalance.toFixed(2)})
+                        </button>
+                        <p className="text-[11px] text-slate-400 text-center">
+                          Wallet balance is insufficient.{' '}
+                          <Link to="/wallet" className="text-[#FF5A1F] hover:underline font-bold">
+                            View Wallet
+                          </Link>
+                        </p>
+                      </div>
+                    ) : (
+                      <button
+                        onClick={handlePayWithWallet}
+                        disabled={payingWallet}
+                        className="w-full py-2.5 bg-[#FF5A1F] hover:bg-orange-600 text-white font-bold text-xs rounded-xl shadow-md shadow-orange-500/20 transition flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                      >
+                        <CreditCard className={`w-3.5 h-3.5 ${payingWallet ? 'animate-spin' : ''}`} />
+                        {payingWallet ? 'Processing Payment...' : `Pay ₹${booking.totalPrice} with Wallet`}
+                      </button>
+                    )}
+                  </div>
+                )}
             </div>
 
             {/* ── Phase 11: Review Section (COMPLETED bookings only) ── */}
